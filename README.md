@@ -1,12 +1,12 @@
 <div align="center">
 
-# Emmanuel Angelo-Hyuwa — Personal Site
+# Emmanuel Angelo-Hyuwa · Personal Site
 
 **Software engineer in the making · Physics & math at heart**
 
 </div>
 
-My corner of the internet — hand-built with **zero frameworks and zero dependencies**: semantic HTML, modern CSS (liquid glass, aurora gradients, scroll-driven reveals), and vanilla JavaScript.
+My corner of the internet, hand-built with **zero frameworks and zero dependencies**: semantic HTML, modern CSS (liquid glass, aurora gradients, a starfield, scroll-driven reveals) and vanilla JavaScript. Even the UI sounds are synthesised live in WebAudio, no audio files.
 
 ## Running locally
 
@@ -19,14 +19,14 @@ python3 -m http.server 8000
 
 ## Deploying
 
-Works out of the box on GitHub Pages, Vercel, Netlify, or any static host — just point it at the repo root.
+Works out of the box on GitHub Pages, Vercel, Netlify or any static host. Just point it at the repo root.
 
 ## Structure
 
 ```
 index.html      # the whole site
 css/style.css   # design system: glass, aurora, animations
-js/main.js      # live age, tilt, magnetic buttons, reveals
+js/main.js      # sound engine, preloader, cursor, starfield, reveals
 assets/         # portrait
 resume.pdf      # résumé
 ```

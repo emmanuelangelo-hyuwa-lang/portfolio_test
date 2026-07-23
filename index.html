@@ -14,78 +14,56 @@
       content="Aspiring software engineer. Physics and math at heart. CS & AI + Physics @ Minerva University."
     />
     <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#05060b" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0c14'/><text x='50' y='70' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='60' fill='%2392a2ff'>E</text></svg>"
     />
   </head>
   <body>
-    <!-- Preloader -->
-    <div class="preloader" id="preloader" aria-hidden="true">
-      <div class="preloader__inner">
-        <span class="preloader__logo mono">EA·H</span>
-        <span class="preloader__pct mono" id="preloader-pct">0%</span>
-        <div class="preloader__bar"><i id="preloader-fill"></i></div>
-      </div>
-    </div>
-
-    <!-- Scroll progress -->
-    <div class="progress" aria-hidden="true"><i id="progress-fill"></i></div>
-
-    <!-- Ambient background -->
-    <canvas id="stars" aria-hidden="true"></canvas>
     <div class="aurora" aria-hidden="true">
       <div class="aurora__blob aurora__blob--1"></div>
       <div class="aurora__blob aurora__blob--2"></div>
       <div class="aurora__blob aurora__blob--3"></div>
-      <div class="aurora__blob aurora__blob--4"></div>
     </div>
     <div class="grain" aria-hidden="true"></div>
-    <div class="cursor-glow" aria-hidden="true"></div>
 
-    <!-- Custom cursor -->
-    <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
-    <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
-
-    <!-- Navigation -->
-    <nav class="nav glass" id="nav">
-      <a href="#top" class="nav__logo mono">EA·H</a>
-      <div class="nav__links">
-        <a href="#about" data-nav>About</a>
-        <a href="#experience" data-nav>Experience</a>
-        <a href="#scoreboard" data-nav>Scores</a>
-        <a href="#achievements" data-nav>Honours</a>
-        <a href="#projects" data-nav>Projects</a>
-        <a href="#contact" data-nav>Contact</a>
-      </div>
-      <button class="sound-toggle" id="sound-toggle" aria-label="Toggle sound" title="Toggle UI sounds">
-        <span class="sound-toggle__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <header class="nav glass" id="nav">
+      <a href="index.html" class="nav__logo mono">EA·H</a>
+      <nav class="nav__links" id="nav-links" aria-label="Main navigation">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="about.html">About</a>
+        <a href="experience.html">Experience</a>
+        <a href="honours.html">Honours</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <a href="resume.pdf" target="_blank" rel="noopener" class="btn btn--small btn--primary">Résumé</a>
+      <button class="nav__burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+        <i></i><i></i>
       </button>
-      <a href="resume.pdf" target="_blank" rel="noopener" class="btn btn--small btn--primary magnetic">
-        Résumé
-      </a>
-    </nav>
+    </header>
 
-    <main id="top">
+    <main>
       <!-- ============ HERO ============ -->
-      <header class="hero" id="hero">
+      <section class="hero">
         <div class="hero__content">
-          <p class="hero__eyebrow reveal mono">
+          <p class="hero__eyebrow mono">
             <span class="pulse-dot" aria-hidden="true"></span>
             Lagos, Nigeria → San Francisco &nbsp;·&nbsp; <span id="lagos-time">--:--</span> WAT
           </p>
           <h1 class="hero__title">
             <span class="hero__line" data-split>Emmanuel</span>
-            <span class="hero__line hero__line--accent serif" data-split>Angelo-Hyuwa</span>
+            <span class="hero__line"><span class="hero__line-inner hero__line--accent serif">Angelo-Hyuwa</span></span>
           </h1>
-          <p class="hero__roles mono reveal">
+          <p class="hero__roles mono">
             <span class="hero__roles-prefix">&gt;</span>
             <span id="role-text">software engineer in the making</span><span class="caret" aria-hidden="true"></span>
           </p>
@@ -95,33 +73,29 @@
             <span id="age" class="mono age">18.000000000</span> years old, counting.
           </p>
           <div class="hero__cta reveal">
-            <a href="#contact" class="btn btn--primary magnetic">Get in touch</a>
-            <a href="#about" class="btn btn--ghost magnetic">More about me ↓</a>
+            <a href="contact.html" class="btn btn--primary">Get in touch</a>
+            <a href="about.html" class="btn btn--ghost">More about me →</a>
           </div>
         </div>
 
-        <div class="hero__portrait reveal" id="portrait-card">
-          <div class="portrait glass" data-tilt data-tilt-max="10">
-            <img src="assets/portrait.jpg" alt="Portrait of Emmanuel Angelo-Hyuwa" />
+        <div class="hero__portrait reveal">
+          <div class="portrait glass" data-tilt data-tilt-max="8">
+            <img src="assets/portrait.jpg" alt="Portrait of Emmanuel Angelo-Hyuwa" fetchpriority="high" />
             <div class="portrait__sheen" aria-hidden="true"></div>
-            <div class="portrait__ring" aria-hidden="true"></div>
             <div class="portrait__badge glass mono">
               <span class="pulse-dot pulse-dot--green" aria-hidden="true"></span>
               open to SWE internships
             </div>
           </div>
-          <div class="orbit orbit--1 glass mono" aria-hidden="true">🏅 20+ honours</div>
-          <div class="orbit orbit--2 glass mono" aria-hidden="true">⚛️ physics + code</div>
-          <div class="orbit orbit--3 glass mono" aria-hidden="true">♟️ chess vice-champ</div>
         </div>
 
-        <a href="#about" class="scroll-cue mono" aria-label="Scroll down">
+        <a href="#explore" class="scroll-cue mono" aria-label="Scroll down">
           <span>scroll</span>
           <i aria-hidden="true"></i>
         </a>
-      </header>
+      </section>
 
-      <!-- ============ MARQUEES ============ -->
+      <!-- ============ HIGHLIGHTS ============ -->
       <section class="marquee glass-soft" aria-label="Highlights">
         <div class="marquee__track" data-marquee>
           <span class="mono">SAT 1550, 800 Math</span><i>✦</i>
@@ -133,459 +107,74 @@
           <span class="mono">Best in State, Nigerian Physics Olympiad</span><i>✦</i>
           <span class="mono">Valedictorian, Class of 2024</span><i>✦</i>
         </div>
-        <div class="marquee__track marquee__track--reverse" data-marquee>
-          <span class="mono">Lagos</span><i>→</i>
-          <span class="mono">San Francisco</span><i>→</i>
-          <span class="mono">Taipei</span><i>→</i>
-          <span class="mono">Hyderabad</span><i>→</i>
-          <span class="mono">Buenos Aires</span><i>→</i>
-          <span class="mono">London</span><i>→</i>
-          <span class="mono">Berlin</span><i>→</i>
-          <span class="mono">Seoul</span><i>→</i>
-          <span class="mono">four years · seven cities · Minerva University</span><i>✦</i>
-        </div>
       </section>
 
-      <!-- ============ ABOUT ============ -->
-      <section class="section" id="about">
-        <p class="section__eyebrow mono reveal">01 / About</p>
+      <!-- ============ EXPLORE ============ -->
+      <section class="section" id="explore">
+        <p class="section__eyebrow mono reveal">Explore</p>
         <h2 class="section__title reveal">
-          Curious by default, <em class="serif">competitive by habit.</em>
-        </h2>
-        <div class="about__grid">
-          <div class="about__text reveal">
-            <p>
-              I grew up in Lagos solving problems for sport: mathematics olympiads, physics
-              contests, economics nationals, televised science competitions. Somewhere between
-              the medals, I fell for the thing underneath them all,
-              <em class="serif">building elegant systems that actually work.</em>
-            </p>
-            <p>
-              Now I'm at Minerva University, a school with a 1.9% acceptance rate that moves
-              its students across seven world cities, double-majoring in Computer Science
-              &amp; Artificial Intelligence and Physics. My aim is simple: become an
-              exceptional software engineer, while keeping one foot in physics and mathematics
-              research.
-            </p>
-            <p>
-              When I'm not writing code, I'm probably tutoring math or programming on
-              Schoolhouse.world, playing chess (joint vice-champion in my first-ever
-              tournament, unrated), or running the Nigerian chapter of Rise Above Autism.
-            </p>
-          </div>
-          <div class="stats">
-            <div class="stat glass card-spot reveal" data-tilt data-tilt-max="6">
-              <span class="stat__num mono" data-count="1550">0</span>
-              <span class="stat__label">SAT · 800 Math / 750 EBRW</span>
-            </div>
-            <div class="stat glass card-spot reveal" data-tilt data-tilt-max="6">
-              <span class="stat__num mono" data-count="8" data-suffix=" A*">0</span>
-              <span class="stat__label">Cambridge IGCSE · incl. 2× Top in Nigeria</span>
-            </div>
-            <div class="stat glass card-spot reveal" data-tilt data-tilt-max="6">
-              <span class="stat__num mono" data-count="25" data-suffix="+">0</span>
-              <span class="stat__label">National &amp; international honours</span>
-            </div>
-            <div class="stat glass card-spot reveal" data-tilt data-tilt-max="6">
-              <span class="stat__num mono" data-count="0.5" data-prefix="top " data-suffix="%" data-decimals="1">0</span>
-              <span class="stat__label">JAMB UTME · 343/400 of ~1.9M candidates</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="edu">
-          <div class="edu__card glass card-spot reveal" data-tilt data-tilt-max="4">
-            <div class="edu__head">
-              <h3>Minerva University</h3>
-              <span class="mono edu__dates">2025 – 2029</span>
-            </div>
-            <p class="edu__degree">
-              B.S. Computer Science &amp; Artificial Intelligence + Physics
-              <span class="tag">Double Major</span>
-            </p>
-            <p class="edu__note">
-              Ranked the world's most innovative university (WURI). Four years, seven cities,
-              starting in San Francisco.
-            </p>
-          </div>
-          <div class="edu__card glass card-spot reveal" data-tilt data-tilt-max="4">
-            <div class="edu__head">
-              <h3>The Ambassadors College</h3>
-              <span class="mono edu__dates">2020 – 2024</span>
-            </div>
-            <p class="edu__degree">
-              High School Diploma <span class="tag">Valedictorian</span>
-            </p>
-            <p class="edu__note">
-              4.13 weighted GPA. Honours Class Program, chess club team leader, health
-              prefect. One of only four students in school history to score 8 A* at IGCSE.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============ EXPERIENCE ============ -->
-      <section class="section" id="experience">
-        <p class="section__eyebrow mono reveal">02 / Experience</p>
-        <h2 class="section__title reveal">
-          Where I've been <em class="serif">putting in the work.</em>
+          A quick map of <em class="serif">everything in here.</em>
         </h2>
 
-        <div class="xp">
-          <article class="xp__row glass card-spot reveal">
-            <div class="xp__when mono">Nov 2022 → Present</div>
-            <div class="xp__body">
-              <h3>Peer Tutor, Mathematics &amp; Programming <span class="xp__org">· Schoolhouse.world</span></h3>
-              <p>
-                Mentoring students one-on-one and in groups on the peer-learning platform
-                founded by Sal Khan, breaking down technical material in math and programming
-                into explanations that actually stick.
-              </p>
-            </div>
-          </article>
-
-          <article class="xp__row glass card-spot reveal">
-            <div class="xp__when mono">Sep 2024 → Present</div>
-            <div class="xp__body">
-              <h3>Nigerian Chapter Head &amp; Social Media Manager <span class="xp__org">· Rise Above Autism</span></h3>
-              <p>
-                Leading the Nigerian chapter: wrote and coordinated content that lifted
-                audience engagement by 40%, and built a centralised online resource hub for
-                neurodivergent people pursuing careers in AI.
-              </p>
-            </div>
-          </article>
-
-          <article class="xp__row glass card-spot reveal">
-            <div class="xp__when mono">Jun 2024 → Present</div>
-            <div class="xp__body">
-              <h3>Member <span class="xp__org">· AI Accelerator Institute</span></h3>
-              <p>
-                Independent and collaborative research on emerging AI trends under
-                mentorship-led programs, synthesising technical findings into clear,
-                discussion-ready writing.
-              </p>
-            </div>
-          </article>
-
-          <article class="xp__row glass card-spot reveal">
-            <div class="xp__when mono">Mar → Apr 2023</div>
-            <div class="xp__body">
-              <h3>Research Intern <span class="xp__org">· AIRLAB, University of Lagos</span></h3>
-              <p>
-                Built a spam classification system in Python with NLTK at the Artificial
-                Intelligence and Robotics Lab, iterating on feature selection to improve
-                classification accuracy by 30%.
-              </p>
-            </div>
-          </article>
-
-          <article class="xp__row glass card-spot reveal">
-            <div class="xp__when mono">Mar 2018 → Present</div>
-            <div class="xp__body">
-              <h3>Volunteer Member <span class="xp__org">· Nigerian Red Cross Society</span></h3>
-              <p>
-                Community relief, education and service initiatives across Lagos, going on
-                eight years now.
-              </p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- ============ SCOREBOARD ============ -->
-      <section class="section" id="scoreboard">
-        <p class="section__eyebrow mono reveal">03 / Scoreboard</p>
-        <h2 class="section__title reveal">
-          The numbers <em class="serif">speak for themselves.</em>
-        </h2>
-
-        <div class="scores">
-          <div class="score glass card-spot reveal">
-            <div class="score__head">
-              <h3>SAT</h3>
-              <span class="mono score__val">1550<span class="score__of">/1600</span></span>
-            </div>
-            <div class="score__bar"><i data-bar="96.9"></i></div>
-            <p class="score__note">800 Math · 750 Evidence-Based Reading &amp; Writing · Oct 2024</p>
-          </div>
-          <div class="score glass card-spot reveal">
-            <div class="score__head">
-              <h3>JAMB UTME</h3>
-              <span class="mono score__val">343<span class="score__of">/400</span></span>
-            </div>
-            <div class="score__bar"><i data-bar="85.75"></i></div>
-            <p class="score__note">Top 0.5% of ~1.9 million candidates nationwide · Apr 2024</p>
-          </div>
-          <div class="score glass card-spot reveal">
-            <div class="score__head">
-              <h3>Cambridge IGCSE</h3>
-              <span class="mono score__val">8<span class="score__of"> A*</span></span>
-            </div>
-            <div class="score__bar"><i data-bar="100"></i></div>
-            <p class="score__note">
-              Math · English · ICT (Top in Nigeria) · Biology · Chemistry · Physics (Top in
-              Nigeria) · Additional Math · Economics
-            </p>
-          </div>
-          <div class="score glass card-spot reveal">
-            <div class="score__head">
-              <h3>High School GPA</h3>
-              <span class="mono score__val">4.13<span class="score__of"> weighted</span></span>
-            </div>
-            <div class="score__bar"><i data-bar="95"></i></div>
-            <p class="score__note">Valedictorian, The Ambassadors College · Class of 2024</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============ ACHIEVEMENTS ============ -->
-      <section class="section" id="achievements">
-        <p class="section__eyebrow mono reveal">04 / Honours</p>
-        <h2 class="section__title reveal">
-          Seven years of <em class="serif">refusing to lose quietly.</em>
-        </h2>
-        <p class="section__sub reveal">
-          Every medal, title and scholarship since 2018. Yes, all of them.
-        </p>
-
-        <div class="timeline">
-          <div class="timeline__year reveal"><span class="mono">2024</span><b class="mono">7 honours</b></div>
-          <div class="timeline__items timeline__items--3">
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🥉</span>
-              <h4>2nd Runner-Up · Interswitch SPAK 5.0</h4>
-              <p>
-                Ranked 3rd best STEM student in Nigeria after two written exams and three
-                televised episodes. ₦1M scholarship, a laptop and a monthly stipend.
-              </p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🇳🇬</span>
-              <h4>Top in Nigeria · IGCSE Physics</h4>
-              <p>Highest physics mark in the country, Oct/Nov 2023 Cambridge IGCSE.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🇳🇬</span>
-              <h4>Top in Nigeria · IGCSE ICT</h4>
-              <p>Highest ICT mark in the country, and the first in my school's history.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">⚛️</span>
-              <h4>Best Student in State · Nigerian Physics Olympiad</h4>
-              <p>Highest score nationally and state-wide in the first round.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🥇</span>
-              <h4>Gold Medalist · Nigerian National Economics Olympiad</h4>
-              <p>Second consecutive gold at the national olympiad.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🎓</span>
-              <h4>Valedictorian · The Ambassadors College</h4>
-              <p>Top of the Class of 2024 with a 4.13 weighted GPA.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🏆</span>
-              <h4>Academic Excellence Award · The Ambassadors College</h4>
-              <p>
-                Awarded at the valedictory service for winning multiple laurels for the school
-                across national competitions.
-              </p>
-            </div>
-          </div>
-
-          <div class="timeline__year reveal"><span class="mono">2023</span><b class="mono">9 honours</b></div>
-          <div class="timeline__items timeline__items--3">
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">📜</span>
-              <h4>8 A* · Cambridge IGCSE</h4>
-              <p>
-                One of only four students in school history to sweep 8 A*, with two
-                Top-in-Nigeria distinctions inside them.
-              </p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🌍</span>
-              <h4>National Representative · Int'l Economics Olympiad, Greece</h4>
-              <p>One of five students representing Nigeria at IEO 2023.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🥇</span>
-              <h4>Gold Medalist · Nigerian National Economics Olympiad</h4>
-              <p>Top 5 nationally after three rounds of selection tests.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🥇</span>
-              <h4>Gold Medalist · Online Int'l Mathematics Challenge</h4>
-              <p>Earned an $88,000 scholarship to North American University.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">♟️</span>
-              <h4>Joint Vice-Champion · Eduline National Chess Tournament</h4>
-              <p>4 wins, 0 losses, 1 draw. First tournament ever, entirely unrated.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🧮</span>
-              <h4>Semi-Finalist · Math Contest Nigeria, Season 1</h4>
-              <p>
-                Top 27 of 5,000+ contestants, "Man of the Show" in the preliminaries and 3rd
-                in the semi-finals.
-              </p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">📺</span>
-              <h4>Quarter-Finalist · Cowbellpedia 2023</h4>
-              <p>Top 66 students nationwide at the televised mathematics competition.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🔢</span>
-              <h4>9th in South-West · Mathematics Is Simple Contest</h4>
-              <p>
-                Best result in my school and a top-10 finish at the Our Generation Foundation
-                grand finale.
-              </p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">⚛️</span>
-              <h4>3rd Best in State · Nigerian Physics Olympiad 2022/23</h4>
-              <p>Third highest score at the state level of the first round.</p>
-            </div>
-          </div>
-
-          <div class="timeline__year reveal"><span class="mono">2022</span><b class="mono">2 honours</b></div>
-          <div class="timeline__items timeline__items--3">
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🏅</span>
-              <h4>Finalist · Witwatersrand Mathematics Competition</h4>
-              <p>Finalist at the University of Witwatersrand's international competition.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🏅</span>
-              <h4>Finalist · Special Maths Contest</h4>
-              <p>Reached the finals of the international contest in my maiden olympiad appearance.</p>
-            </div>
-          </div>
-
-          <div class="timeline__year reveal"><span class="mono">2021</span><b class="mono">2 honours</b></div>
-          <div class="timeline__items timeline__items--3">
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🥈</span>
-              <h4>First Runner-Up · PAMO Royals National Mathematics Contest</h4>
-              <p>Perfect score in round one and a ₦750,000 prize in the finals.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🥈</span>
-              <h4>Silver Medalist · Online Int'l Mathematics Challenge</h4>
-              <p>Second international silver in as many years.</p>
-            </div>
-          </div>
-
-          <div class="timeline__year reveal"><span class="mono">2020</span><b class="mono">2 honours</b></div>
-          <div class="timeline__items timeline__items--3">
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🥈</span>
-              <h4>Silver Medalist · Online Int'l Mathematics Challenge</h4>
-              <p>First international mathematics medal, while still in junior school.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🔬</span>
-              <h4>State Finalist · National JETS Quiz Competition</h4>
-              <p>Third at state level among the Junior Engineers, Technicians and Scientists.</p>
-            </div>
-          </div>
-
-          <div class="timeline__year reveal"><span class="mono">2019 &amp; earlier</span><b class="mono">4 honours</b></div>
-          <div class="timeline__items timeline__items--3">
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🚗</span>
-              <h4>mPulse Agent ×2 · MTN</h4>
-              <p>Completed introductory courses in Driverless Cars and VR/AR technology.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">💡</span>
-              <h4>Most Resourceful Student · Chrisland High School</h4>
-              <p>Named the most resourceful student in my year group.</p>
-            </div>
-            <div class="ach glass card-spot reveal">
-              <span class="ach__icon">🎓</span>
-              <h4>Winfred Awosika Foundation Scholar</h4>
-              <p>Full-tuition scholarship for placing top 20 in entrance examinations.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============ PROJECTS ============ -->
-      <section class="section" id="projects">
-        <p class="section__eyebrow mono reveal">05 / Projects</p>
-        <h2 class="section__title reveal">
-          Things I've <em class="serif">built and shipped.</em>
-        </h2>
-
-        <div class="projects">
-          <article class="project glass card-spot reveal" data-tilt data-tilt-max="5">
-            <div class="project__icon" aria-hidden="true">✉️</div>
-            <h3>Spam Detection System</h3>
+        <div class="explore">
+          <a href="about.html" class="explore__card glass card-spot reveal">
+            <span class="explore__idx mono">01</span>
+            <h3>About</h3>
             <p>
-              An NLP spam classifier built during my AIRLAB internship. Python + NLTK, with
-              iterative feature-selection work that lifted accuracy by 30%.
+              From solving problems for sport in Lagos to a 1.9% acceptance-rate university
+              that moves across seven world cities.
             </p>
-            <div class="project__tags">
-              <span class="tag">Python</span><span class="tag">NLTK</span><span class="tag">NLP</span>
-            </div>
-          </article>
+            <span class="explore__foot">
+              <span class="explore__hint mono">the story + education</span>
+              <span class="explore__arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
 
-          <article class="project glass card-spot reveal" data-tilt data-tilt-max="5">
-            <div class="project__icon" aria-hidden="true">🧠</div>
-            <h3>AI Careers Resource Hub</h3>
+          <a href="experience.html" class="explore__card glass card-spot reveal">
+            <span class="explore__idx mono">02</span>
+            <h3>Experience</h3>
             <p>
-              A centralised online hub I designed and manage for Rise Above Autism, helping
-              neurodivergent individuals find their path into AI careers.
+              AI research at AIRLAB, tutoring on Schoolhouse.world, leading the Nigerian
+              chapter of Rise Above Autism, and more.
             </p>
-            <div class="project__tags">
-              <span class="tag">Product</span><span class="tag">Content</span><span class="tag">Community</span>
-            </div>
-          </article>
+            <span class="explore__foot">
+              <span class="explore__hint mono">5 roles &amp; counting</span>
+              <span class="explore__arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
 
-          <article class="project glass card-spot reveal" data-tilt data-tilt-max="5">
-            <div class="project__icon" aria-hidden="true">🌐</div>
-            <h3>This Website</h3>
+          <a href="honours.html" class="explore__card glass card-spot reveal">
+            <span class="explore__idx mono">03</span>
+            <h3>Honours &amp; Scores</h3>
             <p>
-              Hand-built with zero frameworks and zero dependencies. Semantic HTML, modern
-              CSS and vanilla JavaScript, with sounds synthesised live in WebAudio.
+              Every medal, title and scholarship since 2018 — plus the test scores that
+              back them up.
             </p>
-            <div class="project__tags">
-              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
-              <span class="tag">WebAudio</span>
-            </div>
-          </article>
-        </div>
+            <span class="explore__foot">
+              <span class="explore__hint mono">25+ honours · 4 scores</span>
+              <span class="explore__arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
 
-        <div class="skills reveal">
-          <div class="skills__col glass-soft card-spot">
-            <h4 class="mono">// toolkit</h4>
-            <div class="project__tags">
-              <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Git</span>
-              <span class="tag">NLTK</span><span class="tag">HTML / CSS / JS</span>
-              <span class="tag">Data Analysis</span><span class="tag">Excel</span>
-            </div>
-          </div>
-          <div class="skills__col glass-soft card-spot">
-            <h4 class="mono">// certified</h4>
-            <div class="project__tags">
-              <span class="tag">HackerRank · Software Engineer Intern</span>
-              <span class="tag">HackerRank · Python</span>
-              <span class="tag">HackerRank · Problem Solving</span>
-            </div>
-          </div>
+          <a href="projects.html" class="explore__card glass card-spot reveal">
+            <span class="explore__idx mono">04</span>
+            <h3>Projects</h3>
+            <p>
+              Things I've built and shipped — from an NLP spam classifier to this very
+              website, hand-built with zero frameworks.
+            </p>
+            <span class="explore__foot">
+              <span class="explore__hint mono">built &amp; shipped</span>
+              <span class="explore__arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
         </div>
       </section>
 
-      <!-- ============ CONTACT ============ -->
-      <section class="section" id="contact">
+      <!-- ============ CTA ============ -->
+      <section class="section">
         <div class="contact glass card-spot reveal">
-          <p class="section__eyebrow mono">06 / Contact</p>
+          <p class="section__eyebrow mono" style="justify-content: center">Contact</p>
           <h2 class="contact__title">
             Let's build something <em class="serif">worth talking about.</em>
           </h2>
@@ -594,31 +183,24 @@
             physics or math. My inbox is always open.
           </p>
           <div class="hero__cta">
-            <a href="mailto:kunate0@gmail.com" class="btn btn--primary magnetic">kunate0@gmail.com</a>
-            <a
-              href="https://linkedin.com/in/trailblaizer"
-              target="_blank"
-              rel="noopener"
-              class="btn btn--ghost magnetic"
-              >LinkedIn ↗</a
-            >
-            <a
-              href="https://github.com/emmanuelangelo-hyuwa-lang"
-              target="_blank"
-              rel="noopener"
-              class="btn btn--ghost magnetic"
-              >GitHub ↗</a
-            >
+            <a href="mailto:kunate0@gmail.com" class="btn btn--primary">kunate0@gmail.com</a>
+            <a href="contact.html" class="btn btn--ghost">All the ways to reach me →</a>
           </div>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <p class="mono">
-        © <span id="year">2026</span> Emmanuel Angelo-Hyuwa · designed &amp; built by hand.
-      </p>
-      <p class="mono footer__age">alive for <span id="age-footer">…</span> seconds and counting</p>
+      <div class="footer__inner">
+        <p class="mono">© <span data-year>2026</span> Emmanuel Angelo-Hyuwa · designed &amp; built by hand</p>
+        <nav class="footer__links mono" aria-label="Social links">
+          <a href="https://github.com/emmanuelangelo-hyuwa-lang" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/trailblaizer" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:kunate0@gmail.com">Email</a>
+          <a href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
+        </nav>
+        <p class="mono footer__age">alive for <span id="age-footer">…</span> seconds and counting</p>
+      </div>
     </footer>
 
     <button class="to-top glass" id="to-top" aria-label="Back to top">↑</button>

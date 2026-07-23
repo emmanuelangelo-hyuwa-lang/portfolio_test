@@ -219,13 +219,123 @@
      CONSOLE EASTER EGG
      ============================================================ */
   console.log(
-    "%c⚡ Emmanuel Angelo-Hyuwa",
-    "font-size:20px;font-weight:bold;background:linear-gradient(90deg,#92a2ff,#5eead4);-webkit-background-clip:text;color:transparent;"
+    "%cEmmanuel Angelo-Hyuwa",
+    "font-size:20px;font-weight:bold;color:#f4f4f4;font-family:Georgia,serif;font-style:italic;"
   );
   console.log(
-    "%cHand-built. No frameworks, no dependencies, no build step.\n→ kunate0@gmail.com",
-    "color:#9ba1b3;font-size:12px;"
+    "%cHand-built. No frameworks, no dependencies, no build step.\nThe hero runs a live n-body simulation. → kunate0@gmail.com",
+    "color:#a0a0a0;font-size:12px;"
   );
+
+  /* ============================================================
+     N-BODY GRAVITY · live simulation on the home hero.
+     Particles orbit a drifting attractor; a fine pointer
+     takes over as the attractor when it moves over the hero.
+     ============================================================ */
+  const simCanvas = $("#gravity");
+  if (simCanvas && !reduceMotion) {
+    const sctx = simCanvas.getContext("2d");
+    const hero = simCanvas.parentElement;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const K = 14000; // attractor strength
+    const SOFT = 9000; // gravity softening so close passes sling, not explode
+    const VMAX = 4.5;
+    let W = 0;
+    let H = 0;
+
+    const fit = () => {
+      const r = hero.getBoundingClientRect();
+      W = r.width;
+      H = r.height;
+      simCanvas.width = Math.floor(W * dpr);
+      simCanvas.height = Math.floor(H * dpr);
+      sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    fit();
+    window.addEventListener("resize", fit);
+
+    const count = finePointer ? 150 : 80;
+    const dots = [];
+    const spawn = () => {
+      const a = Math.random() * Math.PI * 2;
+      const d = (0.08 + Math.random() * 0.4) * Math.min(W, H);
+      const v = Math.sqrt((K * d) / (d * d + SOFT)) * (0.7 + Math.random() * 0.6);
+      return {
+        x: W / 2 + Math.cos(a) * d,
+        y: H * 0.45 + Math.sin(a) * d,
+        vx: -Math.sin(a) * v,
+        vy: Math.cos(a) * v,
+        r: 0.4 + Math.random() * 1.1,
+        o: 0.15 + Math.random() * 0.55,
+      };
+    };
+    for (let i = 0; i < count; i++) dots.push(spawn());
+
+    let px = null;
+    let py = null;
+    let pointerAt = 0;
+    hero.addEventListener("pointermove", (e) => {
+      const r = hero.getBoundingClientRect();
+      px = e.clientX - r.left;
+      py = e.clientY - r.top;
+      pointerAt = performance.now();
+    });
+
+    let ax = W / 2;
+    let ay = H * 0.45;
+    let rafId = null;
+
+    const frame = (t) => {
+      // attractor: cursor if fresh, otherwise a slow drifting point
+      const tx = px !== null && t - pointerAt < 2500 ? px : W / 2 + Math.sin(t * 0.00021) * W * 0.16;
+      const ty = px !== null && t - pointerAt < 2500 ? py : H * 0.45 + Math.cos(t * 0.00017) * H * 0.12;
+      ax += (tx - ax) * 0.05;
+      ay += (ty - ay) * 0.05;
+
+      // fade previous frame's alpha for trails, keeping the canvas transparent
+      sctx.globalCompositeOperation = "destination-in";
+      sctx.fillStyle = "rgba(0, 0, 0, 0.9)";
+      sctx.fillRect(0, 0, W, H);
+      sctx.globalCompositeOperation = "source-over";
+
+      for (const p of dots) {
+        const dx = ax - p.x;
+        const dy = ay - p.y;
+        const d2 = dx * dx + dy * dy;
+        const dist = Math.sqrt(d2) || 1;
+        const acc = K / (d2 + SOFT);
+        p.vx += (dx / dist) * acc;
+        p.vy += (dy / dist) * acc;
+        const sp = Math.hypot(p.vx, p.vy);
+        if (sp > VMAX) {
+          p.vx = (p.vx / sp) * VMAX;
+          p.vy = (p.vy / sp) * VMAX;
+        }
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < -60 || p.x > W + 60 || p.y < -60 || p.y > H + 60) {
+          Object.assign(p, spawn());
+          continue;
+        }
+        sctx.beginPath();
+        sctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        sctx.fillStyle = `rgba(244, 244, 244, ${p.o})`;
+        sctx.fill();
+      }
+      rafId = requestAnimationFrame(frame);
+    };
+
+    // only simulate while the hero is on screen
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && rafId === null) {
+        rafId = requestAnimationFrame(frame);
+      } else if (!entry.isIntersecting && rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    }).observe(hero);
+  }
 
   if (reduceMotion || !finePointer) return; // everything below is decorative pointer motion
 

@@ -14,7 +14,7 @@
       content="Aspiring software engineer. Physics and math at heart. CS & AI + Physics @ Minerva University."
     />
     <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#05060b" />
+    <meta name="theme-color" content="#050505" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,19 +24,14 @@
     <link rel="stylesheet" href="css/style.css" />
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0c14'/><text x='50' y='70' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='60' fill='%2392a2ff'>E</text></svg>"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23050505'/><text x='50' y='70' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='62' fill='%23f4f4f4'>E</text></svg>"
     />
   </head>
   <body>
-    <div class="aurora" aria-hidden="true">
-      <div class="aurora__blob aurora__blob--1"></div>
-      <div class="aurora__blob aurora__blob--2"></div>
-      <div class="aurora__blob aurora__blob--3"></div>
-    </div>
     <div class="grain" aria-hidden="true"></div>
 
     <header class="nav glass" id="nav">
-      <a href="index.html" class="nav__logo mono">EA·H</a>
+      <a href="index.html" class="nav__logo serif">E.</a>
       <nav class="nav__links" id="nav-links" aria-label="Main navigation">
         <a href="index.html" aria-current="page">Home</a>
         <a href="about.html">About</a>
@@ -54,10 +49,11 @@
     <main>
       <!-- ============ HERO ============ -->
       <section class="hero">
+        <canvas class="hero__sim" id="gravity" aria-hidden="true"></canvas>
         <div class="hero__content">
           <p class="hero__eyebrow mono">
             <span class="pulse-dot" aria-hidden="true"></span>
-            Lagos, Nigeria → San Francisco &nbsp;·&nbsp; <span id="lagos-time">--:--</span> WAT
+            Lagos, Nigeria &nbsp;·&nbsp; <span id="lagos-time">--:--</span> WAT
           </p>
           <h1 class="hero__title">
             <span class="hero__line" data-split>Emmanuel</span>
@@ -83,11 +79,13 @@
             <img src="assets/portrait.jpg" alt="Portrait of Emmanuel Angelo-Hyuwa" fetchpriority="high" />
             <div class="portrait__sheen" aria-hidden="true"></div>
             <div class="portrait__badge glass mono">
-              <span class="pulse-dot pulse-dot--green" aria-hidden="true"></span>
+              <span class="pulse-dot" aria-hidden="true"></span>
               open to SWE internships
             </div>
           </div>
         </div>
+
+        <p class="hero__sim-note mono" aria-hidden="true">n-body gravity · move your cursor</p>
 
         <a href="#explore" class="scroll-cue mono" aria-label="Scroll down">
           <span>scroll</span>
@@ -98,14 +96,14 @@
       <!-- ============ HIGHLIGHTS ============ -->
       <section class="marquee glass-soft" aria-label="Highlights">
         <div class="marquee__track" data-marquee>
-          <span class="mono">SAT 1550, 800 Math</span><i>✦</i>
-          <span class="mono">8 A* at Cambridge IGCSE</span><i>✦</i>
-          <span class="mono">Top in Nigeria ×2, Physics &amp; ICT</span><i>✦</i>
-          <span class="mono">3rd Best STEM Student in Nigeria, Interswitch SPAK</span><i>✦</i>
-          <span class="mono">2× Gold, National Economics Olympiad</span><i>✦</i>
-          <span class="mono">Team Nigeria, Int'l Economics Olympiad, Greece</span><i>✦</i>
-          <span class="mono">Best in State, Nigerian Physics Olympiad</span><i>✦</i>
-          <span class="mono">Valedictorian, Class of 2024</span><i>✦</i>
+          <span class="mono">SAT 1550, 800 Math</span><i>·</i>
+          <span class="mono">8 A* at Cambridge IGCSE</span><i>·</i>
+          <span class="mono">Top in Nigeria ×2, Physics &amp; ICT</span><i>·</i>
+          <span class="mono">3rd Best STEM Student in Nigeria, Interswitch SPAK</span><i>·</i>
+          <span class="mono">2× Gold, National Economics Olympiad</span><i>·</i>
+          <span class="mono">Team Nigeria, Int'l Economics Olympiad, Greece</span><i>·</i>
+          <span class="mono">Best in State, Nigerian Physics Olympiad</span><i>·</i>
+          <span class="mono">Valedictorian, Class of 2024</span><i>·</i>
         </div>
       </section>
 
@@ -122,7 +120,7 @@
             <h3>About</h3>
             <p>
               From solving problems for sport in Lagos to a 1.9% acceptance-rate university
-              that moves across seven world cities.
+              that moves across four world cities.
             </p>
             <span class="explore__foot">
               <span class="explore__hint mono">the story + education</span>
@@ -147,8 +145,8 @@
             <span class="explore__idx mono">03</span>
             <h3>Honours &amp; Scores</h3>
             <p>
-              Every medal, title and scholarship since 2018 — plus the test scores that
-              back them up.
+              Every medal, title and scholarship since 2018, plus the test scores
+              that back them up.
             </p>
             <span class="explore__foot">
               <span class="explore__hint mono">25+ honours · 4 scores</span>
@@ -160,7 +158,7 @@
             <span class="explore__idx mono">04</span>
             <h3>Projects</h3>
             <p>
-              Things I've built and shipped — from an NLP spam classifier to this very
+              Things I've built and shipped, from an NLP spam classifier to this very
               website, hand-built with zero frameworks.
             </p>
             <span class="explore__foot">

@@ -26,8 +26,10 @@
   const bodyIn = $("#f-body");
   const preview = $("#preview");
   const status = $("#status");
+  const target = $("#target");
 
-  let canPublish = false;
+  let known = new Map(); // slug -> title, so we can warn before overwriting
+  let slugTouched = false; // has the slug been set deliberately?
 
   const slugify = (s) =>
     String(s)
@@ -44,9 +46,11 @@
     status.dataset.tone = tone || "";
   };
 
+  const effectiveSlug = () => slug.value.trim() || slugify(title.value);
+
   const collect = () => ({
     title: title.value.trim(),
-    slug: slug.value.trim() || slugify(title.value),
+    slug: effectiveSlug(),
     date: date.value || new Date().toISOString().slice(0, 10),
     summary: summary.value.trim(),
     tags: tags.value.split(",").map((t) => t.trim()).filter(Boolean),
@@ -69,14 +73,42 @@
     return data;
   };
 
+  async function refreshKnown() {
+    try {
+      const res = await fetch("blog/posts.json", { cache: "no-cache" });
+      const data = await res.json();
+      known = new Map((data.posts || []).map((p) => [p.slug, p.title]));
+    } catch (e) {
+      known = new Map();
+    }
+    showTarget();
+  }
+
+  /* Always say, before publishing, whether this creates or replaces. */
+  function showTarget() {
+    if (!target) return;
+    const s = effectiveSlug();
+    if (!s) {
+      target.textContent = "";
+      target.dataset.tone = "";
+      return;
+    }
+    if (known.has(s)) {
+      target.textContent = `Will REPLACE the existing post “${known.get(s)}” at /post.html?slug=${s}`;
+      target.dataset.tone = "warn";
+    } else {
+      target.textContent = `Will create a new post at /post.html?slug=${s}`;
+      target.dataset.tone = "ok";
+    }
+  }
+
   /* ---------------- gate ---------------- */
   const unlock = (info) => {
-    canPublish = Boolean(info && info.canPublish);
     gate.hidden = true;
     desk.hidden = false;
     date.value = date.value || new Date().toISOString().slice(0, 10);
     const publishBtn = $("#publish");
-    if (!canPublish) {
+    if (!info || !info.canPublish) {
       publishBtn.disabled = true;
       publishBtn.title = "GITHUB_TOKEN is not set on this deployment";
       say("Unlocked. Publishing is off because GITHUB_TOKEN is not set, but Export works.", "warn");
@@ -84,6 +116,7 @@
       say(`Unlocked. Publishing to ${info.repo} on ${info.branch}.`, "ok");
     }
     title.focus();
+    refreshKnown();
     draw();
   };
 
@@ -103,7 +136,6 @@
     }
   });
 
-  // already unlocked in this tab?
   if (sessionStorage.getItem(KEY_STORE)) {
     api({ action: "verify" })
       .then(unlock)
@@ -113,25 +145,69 @@
   /* ---------------- live preview ---------------- */
   const draw = () => {
     const p = collect();
-    if (!slug.value) slug.placeholder = slugify(p.title) || "auto-from-title";
+    slug.placeholder = slugify(p.title) || "auto-from-title";
     preview.innerHTML =
       (p.title ? `<h1 class="article__title">${p.title.replace(/[<>&]/g, "")}</h1>` : "") +
       (typeof window.renderMarkdown === "function"
         ? window.renderMarkdown(p.markdown)
         : "<p>markdown renderer missing</p>");
+    showTarget();
   };
 
-  [title, slug, date, summary, tags, bodyIn].forEach((el) => el && el.addEventListener("input", draw));
+  // the slug follows the title until you take control of it yourself
+  title.addEventListener("input", () => {
+    if (!slugTouched) slug.value = slugify(title.value);
+    draw();
+  });
+  slug.addEventListener("input", () => {
+    slugTouched = true;
+    draw();
+  });
+  [date, summary, tags, bodyIn].forEach((el) => el && el.addEventListener("input", draw));
 
   /* ---------------- actions ---------------- */
+  $("#new").addEventListener("click", () => {
+    if (bodyIn.value.trim() && !confirm("Clear the editor and start a new post?")) return;
+    [title, slug, summary, tags, bodyIn].forEach((el) => (el.value = ""));
+    date.value = new Date().toISOString().slice(0, 10);
+    slugTouched = false;
+    draw();
+    say("Blank post. The slug will follow the title until you edit it.", "ok");
+    title.focus();
+  });
+
   $("#publish").addEventListener("click", async () => {
     const post = collect();
     if (!post.title) return say("Give it a title first.", "warn");
     if (!post.markdown.trim()) return say("The body is empty.", "warn");
+    if (known.has(post.slug)) {
+      const ok = confirm(
+        `A post already exists at "${post.slug}":\n\n  ${known.get(post.slug)}\n\n` +
+          "Publishing will replace it. Continue?"
+      );
+      if (!ok) return say("Cancelled. Change the slug to publish this as a new post.", "warn");
+    }
     say("Publishing…");
     try {
       const out = await api({ action: "upsert", post });
-      say(`${out.replacing ? "Updated" : "Published"} “${post.title}”. ${out.note}`, "ok");
+      say(`${out.replacing ? "Replaced" : "Published"} “${post.title}”. ${out.note}`, "ok");
+      slugTouched = true;
+      setTimeout(refreshKnown, 4000);
+    } catch (err) {
+      say(err.message, "err");
+    }
+  });
+
+  $("#delete").addEventListener("click", async () => {
+    const s = effectiveSlug();
+    if (!s) return say("Nothing to delete: no slug.", "warn");
+    if (!known.has(s)) return say(`No published post at "${s}".`, "warn");
+    if (!confirm(`Delete the published post “${known.get(s)}” (${s})? This cannot be undone here.`)) return;
+    say("Deleting…");
+    try {
+      await api({ action: "delete", slug: s });
+      say(`Deleted “${s}”. Vercel is rebuilding.`, "ok");
+      setTimeout(refreshKnown, 4000);
     } catch (err) {
       say(err.message, "err");
     }
@@ -186,7 +262,10 @@
   });
 
   $("#load").addEventListener("click", async () => {
-    const wanted = prompt("Slug of the post to load for editing:");
+    await refreshKnown();
+    if (!known.size) return say("There are no published posts yet.", "warn");
+    const list = [...known.entries()].map(([s, t]) => `  ${s}  —  ${t}`).join("\n");
+    const wanted = prompt(`Slug of the post to edit:\n\n${list}`, [...known.keys()][0]);
     if (!wanted) return;
     try {
       const res = await fetch("blog/posts.json", { cache: "no-cache" });
@@ -199,8 +278,9 @@
       summary.value = p.summary || "";
       tags.value = (p.tags || []).join(", ");
       bodyIn.value = p.markdown || "";
+      slugTouched = true; // loaded on purpose, so do not rewrite the slug
       draw();
-      say(`Loaded “${p.title}”. Publishing will overwrite it.`, "ok");
+      say(`Loaded “${p.title}”. Publishing replaces it. Change the slug to fork it instead.`, "ok");
     } catch (e) {
       say(e.message, "err");
     }

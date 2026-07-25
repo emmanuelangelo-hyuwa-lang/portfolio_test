@@ -50,8 +50,9 @@
           <p>Write in Markdown. Publish commits to the repo and Vercel redeploys.</p>
         </div>
         <div class="studio__actions" style="margin: 0">
-          <button class="btn btn--ghost btn--small" id="check" type="button">Check token</button>
+          <button class="btn btn--ghost btn--small" id="new" type="button">New post</button>
           <button class="btn btn--ghost btn--small" id="load" type="button">Load existing…</button>
+          <button class="btn btn--ghost btn--small" id="check" type="button">Check token</button>
           <a class="btn btn--ghost btn--small" href="blog.html" target="_blank" rel="noopener">View blog ↗</a>
           <button class="btn btn--ghost btn--small" id="lock" type="button">Lock</button>
         </div>
@@ -93,9 +94,12 @@
             ></textarea>
           </div>
 
+          <p class="studio__status" id="target" role="status" style="margin: 14px 0 0"></p>
+
           <div class="studio__actions">
             <button class="btn btn--primary" id="publish" type="button">Publish</button>
             <button class="btn btn--ghost" id="export" type="button">Export JSON</button>
+            <button class="btn btn--ghost" id="delete" type="button">Delete</button>
           </div>
           <p class="studio__status" id="status" role="status"></p>
         </section>

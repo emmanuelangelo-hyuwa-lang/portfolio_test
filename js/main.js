@@ -34,6 +34,56 @@
   });
 
   /* ============================================================
+     NAV · one highlight pill that slides from the current page
+     to whatever you are pointing at, and back again.
+     ============================================================ */
+  const navLinks = $("#nav-links");
+  if (navLinks) {
+    const indicator = document.createElement("span");
+    indicator.className = "nav__indicator";
+    indicator.setAttribute("aria-hidden", "true");
+    navLinks.prepend(indicator);
+
+    const current = () => navLinks.querySelector('a[aria-current="page"]');
+    const wide = () => window.matchMedia("(min-width: 861px)").matches;
+
+    const moveTo = (link) => {
+      if (!wide()) return;
+      if (!link) {
+        indicator.classList.remove("nav__indicator--on");
+        return;
+      }
+      indicator.style.width = `${link.offsetWidth}px`;
+      indicator.style.transform = `translateX(${link.offsetLeft}px)`;
+      indicator.classList.add("nav__indicator--on");
+    };
+
+    const home = () => moveTo(current());
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("pointerenter", () => moveTo(link));
+      link.addEventListener("focus", () => moveTo(link));
+    });
+
+    navLinks.addEventListener("pointerleave", home);
+    navLinks.addEventListener("focusout", (e) => {
+      if (!navLinks.contains(e.relatedTarget)) home();
+    });
+
+    // green flash while the pointer is held down
+    navLinks.addEventListener("pointerdown", () => navLinks.classList.add("nav__links--pressed"));
+    ["pointerup", "pointercancel", "pointerleave"].forEach((ev) =>
+      navLinks.addEventListener(ev, () => navLinks.classList.remove("nav__links--pressed"))
+    );
+
+    // fonts change link widths, so place it once type has settled
+    const place = () => requestAnimationFrame(home);
+    place();
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(place);
+    window.addEventListener("resize", place);
+  }
+
+  /* ============================================================
      HERO · letter-by-letter title (home only)
      ============================================================ */
   $$("[data-split]").forEach((line) => {
@@ -170,7 +220,11 @@
     },
     { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
   );
-  $$(".reveal").forEach((el) => revealObserver.observe(el));
+  const observeReveals = () =>
+    $$(".reveal:not(.in)").forEach((el) => revealObserver.observe(el));
+  observeReveals();
+  // blog pages inject their cards after fetching, so re-scan when they say so
+  document.addEventListener("content:added", observeReveals);
 
   /* animated counters */
   function animateCount(el) {

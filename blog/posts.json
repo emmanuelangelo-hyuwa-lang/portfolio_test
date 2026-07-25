@@ -1,0 +1,13 @@
+{
+  "posts": [
+    {
+      "slug": "the-canvas-that-was-twice-too-big",
+      "title": "The canvas that was twice too big",
+      "date": "2026-07-25",
+      "summary": "The gravity simulation on my homepage had been overflowing the page for weeks. CSS was hiding the evidence, and I only found it because an unrelated library refused to work.",
+      "tags": ["debugging", "css", "canvas"],
+      "readingMinutes": 2,
+      "markdown": "The hero of this site runs a small n-body gravity simulation on a `<canvas>`. It looked fine. It was not fine.\n\nWhile testing a WebGL glass library, I noticed the document was reporting a width of **2402px** on a **1265px** viewport. Something was overflowing, and `overflow-x: hidden` on `body` had been quietly hiding it the whole time.\n\nThe culprit was the canvas:\n\n```css\n.hero__sim {\n  position: absolute;\n  inset: 0;\n}\n```\n\nThat looks like it should stretch the canvas to fill the hero. It does not.\n\n`canvas` is a **replaced element**. It has intrinsic dimensions, taken from its `width` and `height` *attributes*. When a replaced element is absolutely positioned with `left` and `right` both resolved but `width: auto`, the intrinsic width wins. It does not stretch.\n\nAnd my resize handler was setting those attributes for the backing store:\n\n```js\ncanvas.width  = Math.floor(W * dpr);\ncanvas.height = Math.floor(H * dpr);\n```\n\nOn a 2x display that is double the CSS size I actually wanted. So the element rendered at 2360px wide inside a 1180px hero, spilling off the page.\n\nThe fix is one line, and it is the line everyone forgets:\n\n```css\n.hero__sim {\n  position: absolute;\n  inset: 0;\n  width: 100%;\n  height: 100%;\n}\n```\n\nThe `width`/`height` **attributes** size the drawing buffer. The `width`/`height` **CSS properties** size the box on screen. They are two different things and you almost always need both.\n\nThe part I keep thinking about is that nothing looked broken. The particles were visible, the layout held, no console error. It took a completely unrelated library needing `scrollWidth` to equal the viewport before the bug had any reason to surface.\n\nMost bugs are not found. They are stumbled into."
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Studio</title>
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#050505" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23050505'/><text x='50' y='70' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='62' fill='%2300d68f'>E</text></svg>"
+    />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- passkey gate. The key is checked by /api/publish on the server, never here. -->
+    <section class="gate glass" id="gate">
+      <h1>Studio</h1>
+      <p>Private. Enter the passkey to write.</p>
+      <form id="gate-form" autocomplete="off">
+        <div class="field">
+          <label for="gate-key">Passkey</label>
+          <input
+            class="ctl"
+            id="gate-key"
+            type="password"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="xxxxx-xxxxx-xxxxx-xxxxx"
+          />
+        </div>
+        <button class="btn btn--primary" type="submit">Unlock</button>
+        <p class="studio__status" id="gate-msg" role="status"></p>
+      </form>
+    </section>
+
+    <main class="studio" id="desk" hidden>
+      <div class="studio__head">
+        <div>
+          <h1>Studio</h1>
+          <p>Write in Markdown. Publish commits to the repo and Vercel redeploys.</p>
+        </div>
+        <div class="studio__actions" style="margin: 0">
+          <button class="btn btn--ghost btn--small" id="load" type="button">Load existing…</button>
+          <a class="btn btn--ghost btn--small" href="blog.html" target="_blank" rel="noopener">View blog ↗</a>
+          <button class="btn btn--ghost btn--small" id="lock" type="button">Lock</button>
+        </div>
+      </div>
+
+      <div class="studio__grid">
+        <section class="studio__pane glass">
+          <div class="studio__meta">
+            <div class="field">
+              <label for="f-title">Title</label>
+              <input class="ctl" id="f-title" type="text" placeholder="The canvas that was twice too big" />
+            </div>
+            <div class="field">
+              <label for="f-slug">Slug</label>
+              <input class="ctl" id="f-slug" type="text" placeholder="auto-from-title" spellcheck="false" />
+            </div>
+            <div class="field">
+              <label for="f-date">Date</label>
+              <input class="ctl" id="f-date" type="date" />
+            </div>
+            <div class="field">
+              <label for="f-tags">Tags, comma separated</label>
+              <input class="ctl" id="f-tags" type="text" placeholder="debugging, css" />
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom: 14px">
+            <label for="f-summary">Summary</label>
+            <input class="ctl" id="f-summary" type="text" placeholder="One or two lines shown on the blog index." />
+          </div>
+
+          <div class="field">
+            <label for="f-body">Body (Markdown)</label>
+            <textarea
+              class="ctl"
+              id="f-body"
+              spellcheck="true"
+              placeholder="## A heading&#10;&#10;Some **bold** text, a [link](https://example.com), and `inline code`.&#10;&#10;```js&#10;const x = 1;&#10;```&#10;&#10;- a list item&#10;- another&#10;&#10;> a quote"
+            ></textarea>
+          </div>
+
+          <div class="studio__actions">
+            <button class="btn btn--primary" id="publish" type="button">Publish</button>
+            <button class="btn btn--ghost" id="export" type="button">Export JSON</button>
+          </div>
+          <p class="studio__status" id="status" role="status"></p>
+        </section>
+
+        <section class="studio__pane glass studio__preview">
+          <div class="article__body" id="preview"></div>
+        </section>
+      </div>
+    </main>
+
+    <script src="js/blog.js"></script>
+    <script src="js/studio.js"></script>
+  </body>
+</html>

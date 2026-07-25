@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /studio-1a4d9db7381d.html
+Disallow: /api/
+
+Sitemap: https://www.hyuwa.dev/sitemap.xml

@@ -212,9 +212,55 @@
       return;
     }
 
+    /* Point every bit of page metadata at this specific post. Search crawlers
+       run JS and will pick this up; the social scrapers do not, so shared links
+       still fall back to the site-wide card. */
+    const canonicalUrl = `https://www.hyuwa.dev/post.html?slug=${encodeURIComponent(post.slug)}`;
     document.title = `${post.title} · Emmanuel Angelo-Hyuwa`;
-    const desc = document.querySelector('meta[name="description"]');
-    if (desc && post.summary) desc.setAttribute("content", post.summary);
+
+    const setMeta = (selector, value) => {
+      const el = document.querySelector(selector);
+      if (el && value) el.setAttribute("content", value);
+    };
+    setMeta('meta[name="description"]', post.summary);
+    setMeta('meta[property="og:title"]', `${post.title} · Emmanuel Angelo-Hyuwa`);
+    setMeta('meta[property="og:description"]', post.summary);
+    setMeta('meta[name="twitter:title"]', `${post.title} · Emmanuel Angelo-Hyuwa`);
+    setMeta('meta[name="twitter:description"]', post.summary);
+
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+      ogUrl = document.createElement("meta");
+      ogUrl.setAttribute("property", "og:url");
+      document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute("content", canonicalUrl);
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute("href", canonicalUrl);
+
+    // article-level structured data for this post
+    const ld = document.createElement("script");
+    ld.type = "application/ld+json";
+    ld.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.summary || "",
+      datePublished: post.date,
+      dateModified: (post.updated || "").slice(0, 10) || post.date,
+      keywords: (post.tags || []).join(", "),
+      inLanguage: "en",
+      mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+      url: canonicalUrl,
+      author: {
+        "@type": "Person",
+        "@id": "https://www.hyuwa.dev/#person",
+        name: "Emmanuel Kunat Angelo-Hyuwa",
+        url: "https://www.hyuwa.dev/",
+      },
+    });
+    document.head.appendChild(ld);
 
     mount.innerHTML = `
       <article class="article">

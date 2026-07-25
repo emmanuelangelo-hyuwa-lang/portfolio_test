@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Emmanuel Angelo-Hyuwa · Software Engineer in the Making</title>
+    <title>Emmanuel Angelo-Hyuwa · Building software end to end</title>
     <meta
       name="description"
-      content="Emmanuel Angelo-Hyuwa. CS & AI + Physics at Minerva University. Aspiring software engineer with a deep love for physics and mathematics research. Olympiad medalist, tutor, builder."
+      content="Emmanuel Angelo-Hyuwa builds web apps and browser extensions end to end. Computer Science & AI and Physics at Minerva University. Every project links to its source."
     />
     <meta property="og:title" content="Emmanuel Angelo-Hyuwa" />
     <meta
       property="og:description"
-      content="Aspiring software engineer. Physics and math at heart. CS & AI + Physics @ Minerva University."
+      content="I build web apps and browser extensions end to end. CS & AI + Physics at Minerva University."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.hyuwa.dev/" />
@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Emmanuel Angelo-Hyuwa" />
     <meta
       name="twitter:description"
-      content="Aspiring software engineer. Physics and math at heart. CS & AI + Physics @ Minerva University."
+      content="I build web apps and browser extensions end to end. CS & AI + Physics at Minerva University."
     />
     <meta name="twitter:image" content="https://www.hyuwa.dev/assets/og-pic-twitter.png" />
     <meta name="theme-color" content="#050505" />
@@ -45,10 +45,10 @@
       <a href="index.html" class="nav__logo serif">E.</a>
       <nav class="nav__links" id="nav-links" aria-label="Main navigation">
         <a href="index.html" aria-current="page">Home</a>
-        <a href="about.html">About</a>
+        <a href="projects.html">Work</a>
         <a href="experience.html">Experience</a>
-        <a href="honours.html">Honours</a>
-        <a href="projects.html">Projects</a>
+        <a href="about.html">About</a>
+        <a href="honours.html">Background</a>
         <a href="contact.html">Contact</a>
       </nav>
       <a href="resume.pdf" target="_blank" rel="noopener" class="btn btn--small btn--primary">Résumé</a>
@@ -75,13 +75,19 @@
             <span id="role-text">software engineer in the making</span><span class="caret" aria-hidden="true"></span>
           </p>
           <p class="hero__sub reveal">
-            Physics and mathematics <em class="serif">run through everything I do</em>.
-            Studying Computer Science &amp; AI and Physics at Minerva University, and
-            <span id="age" class="mono age">18.000000000</span> years old, counting.
+            I build things <em class="serif">end to end</em>, mostly web apps and browser
+            extensions. Studying Computer Science &amp; AI and Physics at Minerva University,
+            and <span id="age" class="mono age">18.000000000</span> years old, counting.
           </p>
           <div class="hero__cta reveal">
-            <a href="contact.html" class="btn btn--primary">Get in touch</a>
-            <a href="about.html" class="btn btn--ghost">More about me →</a>
+            <a href="projects.html" class="btn btn--primary">See what I'm building</a>
+            <a
+              href="https://github.com/emmanuelangelo-hyuwa-lang"
+              target="_blank"
+              rel="noopener"
+              class="btn btn--ghost"
+              >GitHub ↗</a
+            >
           </div>
         </div>
 
@@ -104,37 +110,110 @@
         </a>
       </section>
 
-      <!-- ============ HIGHLIGHTS ============ -->
-      <section class="marquee glass-soft" aria-label="Highlights">
+      <!-- ============ NOW ============ -->
+      <section class="marquee glass-soft" aria-label="What I'm working with">
         <div class="marquee__track" data-marquee>
-          <span class="mono">SAT 1550, 800 Math</span><i>·</i>
-          <span class="mono">8 A* at Cambridge IGCSE</span><i>·</i>
-          <span class="mono">Top in Nigeria ×2, Physics &amp; ICT</span><i>·</i>
-          <span class="mono">3rd Best STEM Student in Nigeria, Interswitch SPAK</span><i>·</i>
-          <span class="mono">2× Gold, National Economics Olympiad</span><i>·</i>
-          <span class="mono">Team Nigeria, Int'l Economics Olympiad, Greece</span><i>·</i>
-          <span class="mono">Best in State, Nigerian Physics Olympiad</span><i>·</i>
-          <span class="mono">Valedictorian, Class of 2024</span><i>·</i>
+          <span class="mono">Minerva Connect · Supabase + Postgres</span><i>·</i>
+          <span class="mono">Forum Customizer · Chrome Manifest V3</span><i>·</i>
+          <span class="mono">Ancestor Calendar · Matter.js physics</span><i>·</i>
+          <span class="mono">TrackTest Arena · React + TypeScript</span><i>·</i>
+          <span class="mono">CodePath · AI110 and DSA</span><i>·</i>
+          <span class="mono">CS &amp; AI + Physics @ Minerva University</span><i>·</i>
+          <span class="mono">Python · NLTK · Streamlit · pytest</span><i>·</i>
         </div>
       </section>
 
-      <!-- ============ EXPLORE ============ -->
+      <!-- ============ RECENTLY SHIPPED ============ -->
       <section class="section" id="explore">
+        <p class="section__eyebrow mono reveal">Recently shipped</p>
+        <h2 class="section__title reveal">
+          Things I've <em class="serif">actually built.</em>
+        </h2>
+        <p class="section__sub reveal">
+          Not mockups. Every card opens the real repository, commit history and all.
+        </p>
+
+        <div class="projects">
+          <a
+            class="project glass card-spot reveal"
+            href="https://github.com/emmanuelangelo-hyuwa-lang/minerva-workstudy"
+            target="_blank"
+            rel="noopener"
+            style="text-decoration: none; color: inherit"
+          >
+            <h3>Minerva Connect</h3>
+            <p>
+              A Q&amp;A platform pairing Minerva applicants with current students, matched by
+              college, country and topic. Applicants ask without an account; students sign in
+              with an email code and answer in-app.
+            </p>
+            <div class="project__tags">
+              <span class="tag">Supabase</span><span class="tag">PostgreSQL</span>
+              <span class="tag">Vanilla JS</span><span class="tag">Realtime</span>
+            </div>
+          </a>
+
+          <a
+            class="project glass card-spot reveal"
+            href="https://github.com/emmanuelangelo-hyuwa-lang/minerva-forum"
+            target="_blank"
+            rel="noopener"
+            style="text-decoration: none; color: inherit"
+          >
+            <h3>Forum Customizer</h3>
+            <p>
+              A Chrome extension that restyles Minerva's Forum: eight theme presets, custom
+              fonts and accent colours, header uploads. It reapplies itself as the
+              single-page app navigates.
+            </p>
+            <div class="project__tags">
+              <span class="tag">Manifest V3</span><span class="tag">JavaScript</span>
+              <span class="tag">chrome.storage</span>
+            </div>
+          </a>
+
+          <a
+            class="project glass card-spot reveal"
+            href="https://github.com/emmanuelangelo-hyuwa-lang/ancestor-calendar"
+            target="_blank"
+            rel="noopener"
+            style="text-decoration: none; color: inherit"
+          >
+            <h3>Ancestor Calendar</h3>
+            <p>
+              A deliberately ridiculous booking app where you earn your appointment slot: a
+              physics pegboard date picker, a maths challenge, then an AI ancestral verdict
+              on whether you deserve the meeting.
+            </p>
+            <div class="project__tags">
+              <span class="tag">Matter.js</span><span class="tag">Vanilla JS</span>
+              <span class="tag">Gemini API</span>
+            </div>
+          </a>
+        </div>
+
+        <p class="section__sub reveal" style="margin-top: 26px">
+          <a href="projects.html" style="color: inherit">See every project, the toolkit and the certifications →</a>
+        </p>
+      </section>
+
+      <!-- ============ EXPLORE ============ -->
+      <section class="section">
         <p class="section__eyebrow mono reveal">Explore</p>
         <h2 class="section__title reveal">
           A quick map of <em class="serif">everything in here.</em>
         </h2>
 
         <div class="explore">
-          <a href="about.html" class="explore__card glass card-spot reveal">
+          <a href="projects.html" class="explore__card glass card-spot reveal">
             <span class="explore__idx mono">01</span>
-            <h3>About</h3>
+            <h3>Work</h3>
             <p>
-              From solving problems for sport in Lagos to a 1.9% acceptance-rate university
-              that moves across four world cities.
+              Every public repository, what it does, what it's built with, and a direct link
+              to the code.
             </p>
             <span class="explore__foot">
-              <span class="explore__hint mono">the story + education</span>
+              <span class="explore__hint mono">projects + certifications</span>
               <span class="explore__arrow" aria-hidden="true">→</span>
             </span>
           </a>
@@ -147,33 +226,33 @@
               chapter of Rise Above Autism, and more.
             </p>
             <span class="explore__foot">
-              <span class="explore__hint mono">5 roles &amp; counting</span>
+              <span class="explore__hint mono">roles &amp; counting</span>
+              <span class="explore__arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
+
+          <a href="about.html" class="explore__card glass card-spot reveal">
+            <span class="explore__idx mono">03</span>
+            <h3>About</h3>
+            <p>
+              From solving problems for sport in Lagos to a 1.9% acceptance-rate university
+              that moves across four world cities.
+            </p>
+            <span class="explore__foot">
+              <span class="explore__hint mono">the story + education</span>
               <span class="explore__arrow" aria-hidden="true">→</span>
             </span>
           </a>
 
           <a href="honours.html" class="explore__card glass card-spot reveal">
-            <span class="explore__idx mono">03</span>
-            <h3>Honours &amp; Scores</h3>
-            <p>
-              Every medal, title and scholarship since 2018, plus the test scores
-              that back them up.
-            </p>
-            <span class="explore__foot">
-              <span class="explore__hint mono">25+ honours · 4 scores</span>
-              <span class="explore__arrow" aria-hidden="true">→</span>
-            </span>
-          </a>
-
-          <a href="projects.html" class="explore__card glass card-spot reveal">
             <span class="explore__idx mono">04</span>
-            <h3>Projects</h3>
+            <h3>Background</h3>
             <p>
-              Things I've built and shipped, from an NLP spam classifier to this very
-              website, hand-built with zero frameworks.
+              The school-era record: olympiads, exam scores and competitions from 2018 to
+              2024. Where the habit came from.
             </p>
             <span class="explore__foot">
-              <span class="explore__hint mono">built &amp; shipped</span>
+              <span class="explore__hint mono">before university</span>
               <span class="explore__arrow" aria-hidden="true">→</span>
             </span>
           </a>

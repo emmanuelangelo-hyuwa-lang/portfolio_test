@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Projects · Emmanuel Angelo-Hyuwa</title>
+    <title>Work · Emmanuel Angelo-Hyuwa</title>
     <meta
       name="description"
-      content="Things Emmanuel has built and shipped: an NLP spam classifier, an AI careers resource hub, and this hand-built zero-dependency website."
+      content="Public repositories by Emmanuel Angelo-Hyuwa: Minerva Connect, TrackTest Arena, a Chrome extension, an AI debugging project and more. Every project links to its source."
     />
-    <meta property="og:title" content="Projects · Emmanuel Angelo-Hyuwa" />
+    <meta property="og:title" content="Work · Emmanuel Angelo-Hyuwa" />
     <meta
       property="og:description"
-      content="Built &amp; shipped: NLP, product, and this very website. Zero frameworks."
+      content="Minerva Connect, TrackTest Arena, a Chrome extension and more. Every project links to its source."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.hyuwa.dev/projects.html" />
@@ -19,10 +19,10 @@
     <meta property="og:image:width" content="1731" />
     <meta property="og:image:height" content="909" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Projects · Emmanuel Angelo-Hyuwa" />
+    <meta name="twitter:title" content="Work · Emmanuel Angelo-Hyuwa" />
     <meta
       name="twitter:description"
-      content="Built &amp; shipped: NLP, product, and this very website. Zero frameworks."
+      content="Minerva Connect, TrackTest Arena, a Chrome extension and more. Every project links to its source."
     />
     <meta name="twitter:image" content="https://www.hyuwa.dev/assets/og-pic-twitter.png" />
     <meta name="theme-color" content="#050505" />
@@ -45,10 +45,10 @@
       <a href="index.html" class="nav__logo serif">E.</a>
       <nav class="nav__links" id="nav-links" aria-label="Main navigation">
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
+        <a href="projects.html" aria-current="page">Work</a>
         <a href="experience.html">Experience</a>
-        <a href="honours.html">Honours</a>
-        <a href="projects.html" aria-current="page">Projects</a>
+        <a href="about.html">About</a>
+        <a href="honours.html">Background</a>
         <a href="contact.html">Contact</a>
       </nav>
       <a href="resume.pdf" target="_blank" rel="noopener" class="btn btn--small btn--primary">Résumé</a>
@@ -59,45 +59,172 @@
 
     <main>
       <section class="section page-head">
-        <p class="section__eyebrow mono reveal">Projects</p>
+        <p class="section__eyebrow mono reveal">Work</p>
         <h1 class="section__title reveal">
-          Things I've <em class="serif">built and shipped.</em>
+          Things I've <em class="serif">actually built.</em>
         </h1>
+        <p class="section__sub reveal">
+          Every card below opens the real repository on
+          <a
+            href="https://github.com/emmanuelangelo-hyuwa-lang"
+            target="_blank"
+            rel="noopener"
+            style="color: inherit"
+            >GitHub</a
+          >, commit history and all.
+        </p>
       </section>
 
       <section class="section" style="padding-top: 0">
         <div class="projects" style="margin-top: 0">
+          <a
+            class="project glass card-spot reveal"
+            href="https://github.com/emmanuelangelo-hyuwa-lang/minerva-workstudy"
+            target="_blank"
+            rel="noopener"
+            style="text-decoration: none; color: inherit"
+          >
+            <h3>Minerva Connect</h3>
+            <p>
+              A Q&amp;A platform pairing Minerva applicants with current students, matched by
+              college, country and topic. Applicants ask without making an account; students
+              sign in with an email code and answer by email or in-app chat. Four-table
+              Postgres schema, realtime threads, MIT licensed.
+            </p>
+            <div class="project__tags">
+              <span class="tag">Supabase</span><span class="tag">PostgreSQL</span>
+              <span class="tag">Vanilla JS</span><span class="tag">Realtime</span>
+            </div>
+            <p class="mono" style="color: var(--ink-faint); margin: 12px 0 0; font-size: 0.72rem">
+              minerva-workstudy ↗
+            </p>
+          </a>
+
+          <a
+            class="project glass card-spot reveal"
+            href="https://github.com/emmanuelangelo-hyuwa-lang/tracktest"
+            target="_blank"
+            rel="noopener"
+            style="text-decoration: none; color: inherit"
+          >
+            <h3>TrackTest Arena</h3>
+            <p>
+              A music quiz that turns real albums into fast song-guessing games. Album search
+              via the iTunes API with no login needed to play, timed rounds with speed-based
+              scoring, an animated timer ring and synthesised sound. Builds on
+              uddy-oz/tracktest.
+            </p>
+            <div class="project__tags">
+              <span class="tag">React 19</span><span class="tag">TypeScript</span>
+              <span class="tag">Vite</span><span class="tag">Supabase</span>
+            </div>
+            <p class="mono" style="color: var(--ink-faint); margin: 12px 0 0; font-size: 0.72rem">
+              tracktest ↗
+            </p>
+          </a>
+
+          <a
+            class="project glass card-spot reveal"
+            href="https://github.com/emmanuelangelo-hyuwa-lang/minerva-forum"
+            target="_blank"
+            rel="noopener"
+            style="text-decoration: none; color: inherit"
+          >
+            <h3>Forum Customizer</h3>
+            <p>
+              A Chrome extension that restyles Minerva's Forum: eight theme presets, custom
+              fonts, accent colours and header uploads, all persisted across devices. It
+              reapplies itself as the single-page app navigates.
+            </p>
+            <div class="project__tags">
+              <span class="tag">Manifest V3</span><span class="tag">JavaScript</span>
+              <span class="tag">chrome.storage</span>
+            </div>
+            <p class="mono" style="color: var(--ink-faint); margin: 12px 0 0; font-size: 0.72rem">
+              minerva-forum ↗
+            </p>
+          </a>
+
+          <a
+            class="project glass card-spot reveal"
+            href="https://github.com/emmanuelangelo-hyuwa-lang/ancestor-calendar"
+            target="_blank"
+            rel="noopener"
+            style="text-decoration: none; color: inherit"
+          >
+            <h3>Ancestor Calendar</h3>
+            <p>
+              A deliberately ridiculous booking app where you have to earn your appointment
+              slot: a Matter.js pegboard date picker, a maths challenge, then an AI ancestral
+              verdict on whether you deserve the meeting. Degrades to an offline fallback
+              without an API key.
+            </p>
+            <div class="project__tags">
+              <span class="tag">Matter.js</span><span class="tag">Vanilla JS</span>
+              <span class="tag">Gemini API</span>
+            </div>
+            <p class="mono" style="color: var(--ink-faint); margin: 12px 0 0; font-size: 0.72rem">
+              ancestor-calendar ↗
+            </p>
+          </a>
+
+          <a
+            class="project glass card-spot reveal"
+            href="https://github.com/emmanuelangelo-hyuwa-lang/ai110-module1-gameglitchinvestigator"
+            target="_blank"
+            rel="noopener"
+            style="text-decoration: none; color: inherit"
+          >
+            <h3>Game Glitch Investigator</h3>
+            <p>
+              A CodePath AI110 exercise in debugging code you didn't write. An AI produced a
+              broken Streamlit guessing game; I traced and documented eight bugs, from state
+              persistence to reversed hints, and got all six unit tests passing.
+            </p>
+            <div class="project__tags">
+              <span class="tag">Python</span><span class="tag">Streamlit</span>
+              <span class="tag">pytest</span>
+            </div>
+            <p class="mono" style="color: var(--ink-faint); margin: 12px 0 0; font-size: 0.72rem">
+              ai110-module1-gameglitchinvestigator ↗
+            </p>
+          </a>
+
+          <a
+            class="project glass card-spot reveal"
+            href="https://github.com/emmanuelangelo-hyuwa-lang/portfolio_test"
+            target="_blank"
+            rel="noopener"
+            style="text-decoration: none; color: inherit"
+          >
+            <h3>This Website</h3>
+            <p>
+              Hand-built with zero frameworks, zero dependencies and no build step. Six pages
+              of semantic HTML, modern CSS and vanilla JavaScript. The hero runs a live
+              n-body gravity simulation written from scratch in canvas.
+            </p>
+            <div class="project__tags">
+              <span class="tag">HTML</span><span class="tag">CSS</span>
+              <span class="tag">JavaScript</span><span class="tag">Canvas</span>
+            </div>
+            <p class="mono" style="color: var(--ink-faint); margin: 12px 0 0; font-size: 0.72rem">
+              portfolio_test ↗
+            </p>
+          </a>
+
           <article class="project glass card-spot reveal">
             <h3>Spam Detection System</h3>
             <p>
-              An NLP spam classifier built during my AIRLAB internship. Python + NLTK, with
-              iterative feature-selection work that lifted accuracy by 30%.
+              An NLP spam classifier built during my research internship at AIRLAB,
+              University of Lagos. Python and NLTK, with iterative feature-selection work
+              that lifted classification accuracy by 30%.
             </p>
             <div class="project__tags">
               <span class="tag">Python</span><span class="tag">NLTK</span><span class="tag">NLP</span>
             </div>
-          </article>
-
-          <article class="project glass card-spot reveal">
-            <h3>AI Careers Resource Hub</h3>
-            <p>
-              A centralised online hub I designed and manage for Rise Above Autism, helping
-              neurodivergent individuals find their path into AI careers.
+            <p class="mono" style="color: var(--ink-faint); margin: 12px 0 0; font-size: 0.72rem">
+              internship work · no public repo
             </p>
-            <div class="project__tags">
-              <span class="tag">Product</span><span class="tag">Content</span><span class="tag">Community</span>
-            </div>
-          </article>
-
-          <article class="project glass card-spot reveal">
-            <h3>This Website</h3>
-            <p>
-              Hand-built with zero frameworks, zero dependencies and no build step. Six
-              pages of semantic HTML, modern CSS and vanilla JavaScript.
-            </p>
-            <div class="project__tags">
-              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
-            </div>
           </article>
         </div>
 
@@ -105,29 +232,53 @@
           <div class="skills__col glass-soft card-spot">
             <h4 class="mono">// toolkit</h4>
             <div class="project__tags">
-              <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Git</span>
-              <span class="tag">NLTK</span><span class="tag">HTML / CSS / JS</span>
-              <span class="tag">Data Analysis</span><span class="tag">Excel</span>
+              <span class="tag">Python</span><span class="tag">JavaScript</span>
+              <span class="tag">TypeScript</span><span class="tag">React</span>
+              <span class="tag">Supabase</span><span class="tag">PostgreSQL / SQL</span>
+              <span class="tag">HTML / CSS</span><span class="tag">Git</span>
+              <span class="tag">NLTK</span><span class="tag">Streamlit</span>
+              <span class="tag">pytest</span>
             </div>
           </div>
           <div class="skills__col glass-soft card-spot">
             <h4 class="mono">// certified</h4>
             <div class="project__tags">
-              <span class="tag">HackerRank · Software Engineer Intern</span>
-              <span class="tag">HackerRank · Python</span>
-              <span class="tag">HackerRank · Problem Solving</span>
+              <a
+                href="https://www.hackerrank.com/certificates/961f6a7d946a"
+                target="_blank"
+                rel="noopener"
+                class="tag"
+                style="text-decoration: none"
+                >HackerRank · Software Engineer Intern ↗</a
+              >
+              <a
+                href="https://www.hackerrank.com/certificates/c1e7f12afd45"
+                target="_blank"
+                rel="noopener"
+                class="tag"
+                style="text-decoration: none"
+                >HackerRank · Python (Basic) ↗</a
+              >
+              <a
+                href="https://www.hackerrank.com/certificates/d7aab2d339a9"
+                target="_blank"
+                rel="noopener"
+                class="tag"
+                style="text-decoration: none"
+                >HackerRank · Problem Solving ↗</a
+              >
             </div>
           </div>
         </div>
 
         <nav class="pager" aria-label="Page navigation">
-          <a href="honours.html" class="pager__link pager__link--prev glass card-spot reveal">
+          <a href="index.html" class="pager__link pager__link--prev glass card-spot reveal">
             <span class="pager__label mono">Previous</span>
-            <span class="pager__title"><i aria-hidden="true">←</i> Honours &amp; Scores</span>
+            <span class="pager__title"><i aria-hidden="true">←</i> Home</span>
           </a>
-          <a href="contact.html" class="pager__link pager__link--next glass card-spot reveal">
+          <a href="experience.html" class="pager__link pager__link--next glass card-spot reveal">
             <span class="pager__label mono">Next</span>
-            <span class="pager__title">Contact <i aria-hidden="true">→</i></span>
+            <span class="pager__title">Experience <i aria-hidden="true">→</i></span>
           </a>
         </nav>
       </section>

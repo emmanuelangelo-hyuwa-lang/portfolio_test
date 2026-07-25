@@ -55,12 +55,12 @@
   const roleEl = $("#role-text");
   if (roleEl) {
     const roles = [
-      "software engineer in the making",
-      "physics + math, always",
-      "olympiad medalist ×20+",
+      "building minerva connect",
+      "web apps + chrome extensions",
+      "CS & AI + physics @ minerva",
+      "debugging code i didn't write",
+      "supabase, python, vanilla js",
       "peer tutor @ schoolhouse.world",
-      "chess player, dangerously unrated",
-      "CS & AI + Physics @ Minerva",
     ];
     let roleIdx = 0;
 

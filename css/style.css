@@ -345,10 +345,15 @@ body {
   position: relative;
 }
 
-/* live n-body simulation canvas, behind the hero content */
+/* live n-body simulation canvas, behind the hero content.
+   canvas is a replaced element, so inset:0 alone does not stretch it: without
+   an explicit width/height it renders at its intrinsic (attribute) size and
+   overflows the page. */
 .hero__sim {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   pointer-events: none;
 }

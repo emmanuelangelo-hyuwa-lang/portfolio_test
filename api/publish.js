@@ -86,8 +86,62 @@ async function savePosts(posts, sha, message) {
     method: "PUT",
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`GitHub write failed (${res.status}): ${await res.text()}`);
+  if (!res.ok) {
+    const text = await res.text();
+    if (res.status === 403 || res.status === 404) {
+      // GitHub tells us exactly which permission it wanted; pass that on
+      const needed = res.headers.get("x-accepted-github-permissions") || "contents=write";
+      throw new Error(
+        `GitHub refused the write (${res.status}). The token needs "${needed}" on ${REPO}. ` +
+          `Run Check token in the studio for a precise diagnosis. Raw: ${text}`
+      );
+    }
+    throw new Error(`GitHub write failed (${res.status}): ${text}`);
+  }
   return res.json();
+}
+
+/* Reports what the configured token can actually do, without ever revealing it. */
+async function diagnose() {
+  const out = { repo: REPO, branch: BRANCH };
+
+  const who = await gh("/user");
+  out.tokenValid = who.ok;
+  if (who.ok) {
+    const u = await who.json();
+    out.tokenOwner = u.login;
+  } else {
+    out.tokenError = `GET /user returned ${who.status}. The token is invalid, expired, or revoked.`;
+    return out;
+  }
+
+  const repo = await gh(`/repos/${REPO}`);
+  out.repoVisible = repo.ok;
+  if (!repo.ok) {
+    out.repoError =
+      `GET /repos/${REPO} returned ${repo.status}. The token is not scoped to this repository. ` +
+      `In the token settings choose "Only select repositories" and add ${REPO}.`;
+    return out;
+  }
+  const r = await repo.json();
+  out.permissions = r.permissions || null;
+  out.canPush = Boolean(r.permissions && r.permissions.push);
+
+  // the definitive test: ask GitHub what a write would require
+  const probe = await gh(`/repos/${REPO}/contents/${POSTS_PATH}`, {
+    method: "PUT",
+    body: JSON.stringify({ message: "permission probe", content: "", branch: BRANCH }),
+  });
+  out.writeProbeStatus = probe.status;
+  out.acceptedPermissions = probe.headers.get("x-accepted-github-permissions") || null;
+  // 422 means we got past authorisation and it only disliked our payload: write is allowed
+  out.canWriteContents = probe.status === 422 || probe.status === 200 || probe.status === 201;
+  if (!out.canWriteContents) {
+    out.fix =
+      'Open the token, set Repository permissions → Contents to "Read and write", ' +
+      `confirm ${REPO} is in the selected repositories, and save. No redeploy needed.`;
+  }
+  return out;
 }
 
 module.exports = async (req, res) => {
@@ -136,6 +190,14 @@ module.exports = async (req, res) => {
       error:
         "GITHUB_TOKEN is not set, so the studio cannot commit. Add it in Vercel, or use Export instead.",
     });
+  }
+
+  if (body.action === "diagnose") {
+    try {
+      return res.status(200).json(await diagnose());
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
   }
 
   try {

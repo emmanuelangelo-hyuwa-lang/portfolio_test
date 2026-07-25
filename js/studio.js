@@ -159,6 +159,27 @@
     say("Exported and copied. Paste it into the posts array in blog/posts.json.", "ok");
   });
 
+  $("#check").addEventListener("click", async () => {
+    say("Asking GitHub what the token can do…");
+    try {
+      const d = await api({ action: "diagnose" });
+      if (!d.tokenValid) return say(d.tokenError, "err");
+      if (!d.repoVisible) return say(d.repoError, "err");
+      if (!d.canWriteContents) {
+        return say(
+          `Token belongs to ${d.tokenOwner} and can see ${d.repo}, but cannot write contents ` +
+            `(probe returned ${d.writeProbeStatus}` +
+            (d.acceptedPermissions ? `, GitHub wants "${d.acceptedPermissions}"` : "") +
+            `). ${d.fix}`,
+          "err"
+        );
+      }
+      say(`All good. Token ${d.tokenOwner} can write contents on ${d.repo} (${d.branch}).`, "ok");
+    } catch (err) {
+      say(err.message, "err");
+    }
+  });
+
   $("#lock").addEventListener("click", () => {
     sessionStorage.removeItem(KEY_STORE);
     location.reload();

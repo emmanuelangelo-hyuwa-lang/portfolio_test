@@ -174,6 +174,20 @@
 
     <button class="to-top glass" id="to-top" aria-label="Back to top">↑</button>
 
+    <!-- Prerender internal pages on hover so navigation is instant.
+         Ignored by browsers without Speculation Rules support. -->
+    <script type="speculationrules">
+      {
+        "prerender": [
+          {
+            "where": {
+              "selector_matches": ".nav__links a, .pager__link, .explore__card, .nav__logo"
+            },
+            "eagerness": "moderate"
+          }
+        ]
+      }
+    </script>
     <script src="js/main.js"></script>
   </body>
 </html>

@@ -1308,3 +1308,64 @@ body.loaded .hero__line-inner {
     display: none;
   }
 }
+
+/* ============================================================
+   PAGE TRANSITIONS
+   The nav, grain and back-to-top keep their own view-transition
+   names so they persist across a navigation instead of fading
+   out and back in. Only the page body actually crossfades.
+   ============================================================ */
+.nav {
+  view-transition-name: nav;
+}
+
+.grain {
+  view-transition-name: grain;
+}
+
+.to-top {
+  view-transition-name: to-top;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  /* drop the default crossfade so ours is the only thing running */
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  animation: page-out 0.26s var(--ease-out) both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.42s var(--ease-out) both;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* nav, grain and to-top should not animate at all: they are the anchor */
+::view-transition-group(nav),
+::view-transition-group(grain),
+::view-transition-group(to-top) {
+  animation-duration: 0.01ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

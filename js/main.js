@@ -161,7 +161,7 @@
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const el = entry.target;
-        el.style.transitionDelay = `${Math.min(i++ * 65, 320)}ms`;
+        el.style.transitionDelay = `${Math.min(i++ * 45, 180)}ms`;
         el.classList.add("in");
         // clear the stagger delay once revealed so hover transitions stay snappy
         el.addEventListener("transitionend", () => (el.style.transitionDelay = ""), { once: true });

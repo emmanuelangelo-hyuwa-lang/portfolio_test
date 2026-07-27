@@ -48,12 +48,6 @@
   "rewrites": [
     {
       "source": "/sitemap.xml",
-      "has": [
-        {
-          "type": "host",
-          "value": "blog.hyuwa.dev"
-        }
-      ],
       "destination": "/api/sitemap"
     },
     {

@@ -35,6 +35,11 @@
       "permanent": true
     },
     {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/blog.html",
       "destination": "https://blog.hyuwa.dev/",
       "permanent": true
@@ -59,6 +64,10 @@
         }
       ],
       "destination": "/blog.html"
+    },
+    {
+      "source": "/",
+      "destination": "/home.html"
     },
     {
       "source": "/:slug",

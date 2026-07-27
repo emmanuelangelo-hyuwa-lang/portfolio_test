@@ -1,13 +1,15 @@
-/* Blog: loads blog/posts.json, renders the index or a single post.
-   Markdown is rendered by the small parser below so the site keeps its
-   no-dependency, no-build-step rule. Everything is escaped before any
-   markup is added. */
+/* Blog: merges natively written posts (blog/posts.json) with Substack posts
+   (/api/substack, fetched and sanitised server-side) and renders both in this
+   site's own styling. No iframes, no embeds, no Substack CSS.
+
+   Markdown for native posts is rendered by the small parser below so the site
+   keeps its no-dependency, no-build-step rule. */
 (() => {
   "use strict";
 
   const $ = (s, r = document) => r.querySelector(s);
 
-  /* ---------------- markdown ---------------- */
+  /* ---------------- markdown (native posts) ---------------- */
   const esc = (s) =>
     String(s).replace(
       /[&<>"']/g,
@@ -94,6 +96,33 @@
 
   window.renderMarkdown = renderMarkdown;
 
+  /* ------------- html -> markdown (for downloading Substack posts) -------- */
+  function htmlToMarkdown(html) {
+    let s = String(html || "");
+    s = s.replace(/<pre>\s*<code>([\s\S]*?)<\/code>\s*<\/pre>/gi, (_, c) => `\n\n\`\`\`\n${decode(c)}\n\`\`\`\n\n`);
+    s = s.replace(/<pre>([\s\S]*?)<\/pre>/gi, (_, c) => `\n\n\`\`\`\n${decode(c)}\n\`\`\`\n\n`);
+    s = s.replace(/<code>([\s\S]*?)<\/code>/gi, (_, c) => `\`${decode(c)}\``);
+    s = s.replace(/<h([1-6])>([\s\S]*?)<\/h\1>/gi, (_, n, t) => `\n\n${"#".repeat(+n)} ${strip(t)}\n\n`);
+    s = s.replace(/<blockquote>([\s\S]*?)<\/blockquote>/gi, (_, t) => `\n\n> ${strip(t)}\n\n`);
+    s = s.replace(/<li>([\s\S]*?)<\/li>/gi, (_, t) => `- ${strip(t)}\n`);
+    s = s.replace(/<\/?(ul|ol)>/gi, "\n");
+    s = s.replace(/<img[^>]*alt="([^"]*)"[^>]*src="([^"]*)"[^>]*>/gi, (_, a, src) => `\n\n![${a}](${src})\n\n`);
+    s = s.replace(/<img[^>]*src="([^"]*)"[^>]*>/gi, (_, src) => `\n\n![](${src})\n\n`);
+    s = s.replace(/<a[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, (_, h, t) => `[${strip(t)}](${h})`);
+    s = s.replace(/<(strong|b)>([\s\S]*?)<\/\1>/gi, (_, __, t) => `**${strip(t)}**`);
+    s = s.replace(/<(em|i)>([\s\S]*?)<\/\1>/gi, (_, __, t) => `*${strip(t)}*`);
+    s = s.replace(/<hr\s*\/?>/gi, "\n\n---\n\n");
+    s = s.replace(/<br\s*\/?>/gi, "\n");
+    s = s.replace(/<\/p>/gi, "\n\n");
+    return decode(s.replace(/<[^>]*>/g, "")).replace(/\n{3,}/g, "\n\n").trim();
+  }
+  const strip = (h) => decode(String(h).replace(/<[^>]*>/g, "")).trim();
+  function decode(s) {
+    const el = document.createElement("textarea");
+    el.innerHTML = String(s);
+    return el.value;
+  }
+
   /* ---------------- helpers ---------------- */
   const fmtDate = (iso) => {
     const d = new Date(`${iso}T00:00:00`);
@@ -101,6 +130,9 @@
       ? iso
       : d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
   };
+
+  const normTitle = (t) =>
+    String(t || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
   let toastTimer;
   function toast(message) {
@@ -118,8 +150,8 @@
   }
   window.blogToast = toast;
 
-  function download(name, text, type) {
-    const blob = new Blob([text], { type: type || "text/markdown;charset=utf-8" });
+  function download(name, text) {
+    const blob = new Blob([text], { type: "text/markdown;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -130,35 +162,63 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
+  const postUrl = (slug) => `/p/${encodeURIComponent(slug)}`;
+
   function toMarkdownFile(post) {
+    const body = post.source === "substack" ? htmlToMarkdown(post.html) : post.markdown;
     const fm = [
       "---",
       `title: ${post.title}`,
       `date: ${post.date}`,
       post.summary ? `summary: ${post.summary}` : null,
       post.tags && post.tags.length ? `tags: [${post.tags.join(", ")}]` : null,
-      `source: ${location.origin}/post.html?slug=${post.slug}`,
+      `source: ${location.origin}${postUrl(post.slug)}`,
+      post.link ? `original: ${post.link}` : null,
       "---",
       "",
     ]
       .filter(Boolean)
       .join("\n");
-    return fm + post.markdown.trim() + "\n";
+    return fm + String(body || "").trim() + "\n";
   }
 
-  async function loadPosts() {
-    const res = await fetch("blog/posts.json", { cache: "no-cache" });
-    if (!res.ok) throw new Error(`Could not load posts (${res.status})`);
-    const data = await res.json();
-    const posts = Array.isArray(data.posts) ? data.posts : [];
-    return posts.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  /* ---------------- loading + merging ---------------- */
+  let aliases = new Map(); // old native slug -> canonical slug
+
+  async function loadAll() {
+    const [nativeRes, subRes] = await Promise.allSettled([
+      fetch("/blog/posts.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { posts: [] })),
+      fetch("/api/substack", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { posts: [] })),
+    ]);
+
+    const native = (nativeRes.status === "fulfilled" ? nativeRes.value.posts || [] : []).map((p) => ({
+      ...p,
+      source: "native",
+    }));
+    const substack = subRes.status === "fulfilled" ? subRes.value.posts || [] : [];
+
+    // Where the same piece exists in both places, Substack wins: it is the
+    // published original. The native slug is kept as an alias so any link
+    // shared before the move still resolves.
+    aliases = new Map();
+    const subByTitle = new Map(substack.map((p) => [normTitle(p.title), p]));
+    const kept = native.filter((p) => {
+      const match = subByTitle.get(normTitle(p.title));
+      if (match) {
+        aliases.set(p.slug, match.slug);
+        return false;
+      }
+      return true;
+    });
+
+    return [...substack, ...kept].sort((a, b) => String(b.date).localeCompare(String(a.date)));
   }
 
   /* ---------------- index ---------------- */
   async function renderIndex(mount) {
     let posts;
     try {
-      posts = await loadPosts();
+      posts = await loadAll();
     } catch (e) {
       mount.innerHTML = `<div class="blog-empty glass">Could not load posts. ${esc(e.message)}</div>`;
       return;
@@ -172,11 +232,12 @@
     mount.innerHTML = posts
       .map(
         (p) => `
-      <a class="post-card glass card-spot reveal" href="post.html?slug=${encodeURIComponent(p.slug)}">
+      <a class="post-card glass card-spot reveal" href="${postUrl(p.slug)}">
         <span class="post-card__meta mono">
           <span>${esc(fmtDate(p.date))}</span>
           <span aria-hidden="true">·</span>
           <span>${esc(String(p.readingMinutes || 1))} min read</span>
+          ${p.source === "substack" ? '<span class="tag tag--substack">Substack</span>' : ""}
           ${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}
         </span>
         <h2>${esc(p.title)}</h2>
@@ -186,36 +247,43 @@
       )
       .join("");
 
-    // let the shared reveal observer pick these up
     document.dispatchEvent(new CustomEvent("content:added"));
   }
 
   /* ---------------- single post ---------------- */
+  function currentSlug() {
+    const fromPath = /\/p\/([^/?#]+)/.exec(location.pathname);
+    if (fromPath) return decodeURIComponent(fromPath[1]);
+    return new URLSearchParams(location.search).get("slug");
+  }
+
   async function renderPost(mount) {
-    const slug = new URLSearchParams(location.search).get("slug");
-    if (!slug) {
+    const wanted = currentSlug();
+    if (!wanted) {
       mount.innerHTML = `<div class="blog-empty glass">No post specified. <a href="blog.html" style="color:inherit">Back to the blog</a>.</div>`;
       return;
     }
 
     let posts;
     try {
-      posts = await loadPosts();
+      posts = await loadAll();
     } catch (e) {
       mount.innerHTML = `<div class="blog-empty glass">Could not load this post. ${esc(e.message)}</div>`;
       return;
     }
 
-    const post = posts.find((p) => p.slug === slug);
+    let post = posts.find((p) => p.slug === wanted);
+    if (!post && aliases.has(wanted)) {
+      const canonical = aliases.get(wanted);
+      post = posts.find((p) => p.slug === canonical);
+      if (post) history.replaceState(null, "", postUrl(canonical));
+    }
     if (!post) {
       mount.innerHTML = `<div class="blog-empty glass">That post does not exist. <a href="blog.html" style="color:inherit">Back to the blog</a>.</div>`;
       return;
     }
 
-    /* Point every bit of page metadata at this specific post. Search crawlers
-       run JS and will pick this up; the social scrapers do not, so shared links
-       still fall back to the site-wide card. */
-    const canonicalUrl = `https://www.hyuwa.dev/post.html?slug=${encodeURIComponent(post.slug)}`;
+    const canonicalUrl = `https://www.hyuwa.dev${postUrl(post.slug)}`;
     document.title = `${post.title} · Emmanuel Angelo-Hyuwa`;
 
     const setMeta = (selector, value) => {
@@ -239,7 +307,6 @@
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.setAttribute("href", canonicalUrl);
 
-    // article-level structured data for this post
     const ld = document.createElement("script");
     ld.type = "application/ld+json";
     ld.textContent = JSON.stringify({
@@ -262,12 +329,32 @@
     });
     document.head.appendChild(ld);
 
+    const bodyHtml =
+      post.source === "substack" ? post.html : renderMarkdown(post.markdown);
+
+    const teaserNote =
+      post.source === "substack" && !post.hasFullContent
+        ? `<div class="readon glass">
+             <p>This one is only partly in the feed.</p>
+             <a class="btn btn--primary btn--small" href="${post.link}" target="_blank" rel="noopener">Continue reading on Substack ↗</a>
+           </div>`
+        : "";
+
+    const footerNote =
+      post.source === "substack"
+        ? `<div class="readon readon--foot">
+             <span class="mono">Originally published on Substack</span>
+             <a class="btn btn--ghost btn--small" href="${post.link}" target="_blank" rel="noopener">Read on Substack ↗</a>
+           </div>`
+        : "";
+
     mount.innerHTML = `
       <article class="article">
         <p class="article__meta mono">
           <span>${esc(fmtDate(post.date))}</span>
           <span aria-hidden="true">·</span>
           <span>${esc(String(post.readingMinutes || 1))} min read</span>
+          ${post.source === "substack" ? '<span class="tag tag--substack">Substack</span>' : ""}
           ${(post.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}
         </p>
         <h1 class="article__title">${esc(post.title)}</h1>
@@ -276,7 +363,9 @@
           <button class="btn btn--ghost btn--small" id="dl" type="button">Download as Markdown</button>
           <button class="btn btn--ghost btn--small" id="share" type="button">Share this post</button>
         </div>
-        <div class="article__body">${renderMarkdown(post.markdown)}</div>
+        ${teaserNote}
+        <div class="article__body">${bodyHtml}</div>
+        ${footerNote}
       </article>`;
 
     $("#dl").addEventListener("click", () => {
@@ -285,11 +374,10 @@
     });
 
     $("#share").addEventListener("click", async () => {
-      const url = `${location.origin}${location.pathname}?slug=${encodeURIComponent(post.slug)}`;
-      const payload = { title: post.title, text: post.summary || post.title, url };
+      const url = `${location.origin}${postUrl(post.slug)}`;
       if (navigator.share) {
         try {
-          await navigator.share(payload);
+          await navigator.share({ title: post.title, text: post.summary || post.title, url });
           return;
         } catch (e) {
           if (e && e.name === "AbortError") return;

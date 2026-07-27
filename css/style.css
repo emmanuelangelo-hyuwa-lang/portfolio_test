@@ -1983,3 +1983,76 @@ textarea.ctl::placeholder {
     min-height: 300px;
   }
 }
+
+/* ============================================================
+   SUBSTACK POSTS
+   Feed content is sanitised server-side and stripped of Substack's
+   own classes, so it inherits .article__body styling. These rules
+   only cover what the feed adds: figures, and the origin notes.
+   ============================================================ */
+.tag--substack {
+  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.article__body figure {
+  margin: 1.8em 0;
+}
+
+.article__body figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.article__body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.article__body figcaption {
+  margin-top: 10px;
+  color: var(--ink-faint);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+/* shown when the feed only carries a teaser */
+.readon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 22px 24px;
+  border-radius: var(--radius);
+  margin: 28px 0;
+}
+
+.readon p {
+  color: var(--ink-dim);
+  font-size: 0.94rem;
+  margin: 0;
+}
+
+.readon--foot {
+  margin-top: 44px;
+  padding: 22px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+}
+
+.readon--foot .mono {
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 560px) {
+  .readon {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

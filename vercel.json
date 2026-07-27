@@ -1,4 +1,80 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [{ "source": "/p/:slug", "destination": "/post.html" }]
+  "redirects": [
+    {
+      "source": "/blog.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "blog.hyuwa.dev"
+        }
+      ],
+      "destination": "https://blog.hyuwa.dev/",
+      "permanent": true
+    },
+    {
+      "source": "/post.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "blog.hyuwa.dev"
+        }
+      ],
+      "destination": "https://blog.hyuwa.dev/",
+      "permanent": true
+    },
+    {
+      "source": "/:page.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "blog.hyuwa.dev"
+        }
+      ],
+      "destination": "https://www.hyuwa.dev/:page.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog.html",
+      "destination": "https://blog.hyuwa.dev/",
+      "permanent": true
+    },
+    {
+      "source": "/p/:slug",
+      "destination": "https://blog.hyuwa.dev/:slug",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "has": [
+        {
+          "type": "host",
+          "value": "blog.hyuwa.dev"
+        }
+      ],
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "blog.hyuwa.dev"
+        }
+      ],
+      "destination": "/blog.html"
+    },
+    {
+      "source": "/:slug",
+      "has": [
+        {
+          "type": "host",
+          "value": "blog.hyuwa.dev"
+        }
+      ],
+      "destination": "/post.html"
+    }
+  ]
 }

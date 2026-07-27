@@ -162,7 +162,14 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  const postUrl = (slug) => `/p/${encodeURIComponent(slug)}`;
+  /* The blog lives on blog.hyuwa.dev, where posts are /:slug. On the main site
+     they are /p/:slug, which Vercel 301s to the subdomain. Canonicals always
+     point at the subdomain so each post has exactly one indexable URL. */
+  const BLOG_HOST = "blog.hyuwa.dev";
+  const onBlogHost = () => location.hostname === BLOG_HOST;
+  const postUrl = (slug) =>
+    onBlogHost() ? `/${encodeURIComponent(slug)}` : `/p/${encodeURIComponent(slug)}`;
+  const canonicalFor = (slug) => `https://${BLOG_HOST}/${encodeURIComponent(slug)}`;
 
   function toMarkdownFile(post) {
     const body = post.source === "substack" ? htmlToMarkdown(post.html) : post.markdown;
@@ -172,7 +179,7 @@
       `date: ${post.date}`,
       post.summary ? `summary: ${post.summary}` : null,
       post.tags && post.tags.length ? `tags: [${post.tags.join(", ")}]` : null,
-      `source: ${location.origin}${postUrl(post.slug)}`,
+      `source: ${canonicalFor(post.slug)}`,
       post.link ? `original: ${post.link}` : null,
       "---",
       "",
@@ -252,9 +259,12 @@
 
   /* ---------------- single post ---------------- */
   function currentSlug() {
-    const fromPath = /\/p\/([^/?#]+)/.exec(location.pathname);
-    if (fromPath) return decodeURIComponent(fromPath[1]);
-    return new URLSearchParams(location.search).get("slug");
+    const q = new URLSearchParams(location.search).get("slug");
+    if (q) return q;
+    // matches /:slug on the blog host and /p/:slug on the main site
+    const m = /^\/(?:p\/)?([^/?#]+)\/?$/.exec(location.pathname);
+    if (m && !/\.html?$/i.test(m[1])) return decodeURIComponent(m[1]);
+    return null;
   }
 
   async function renderPost(mount) {
@@ -283,7 +293,7 @@
       return;
     }
 
-    const canonicalUrl = `https://www.hyuwa.dev${postUrl(post.slug)}`;
+    const canonicalUrl = canonicalFor(post.slug);
     document.title = `${post.title} · Emmanuel Angelo-Hyuwa`;
 
     const setMeta = (selector, value) => {
@@ -374,7 +384,7 @@
     });
 
     $("#share").addEventListener("click", async () => {
-      const url = `${location.origin}${postUrl(post.slug)}`;
+      const url = canonicalFor(post.slug);
       if (navigator.share) {
         try {
           await navigator.share({ title: post.title, text: post.summary || post.title, url });

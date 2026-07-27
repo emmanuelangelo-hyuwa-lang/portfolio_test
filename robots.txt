@@ -4,3 +4,4 @@ Disallow: /studio-1a4d9db7381d.html
 Disallow: /api/
 
 Sitemap: https://www.hyuwa.dev/sitemap.xml
+Sitemap: https://blog.hyuwa.dev/sitemap.xml

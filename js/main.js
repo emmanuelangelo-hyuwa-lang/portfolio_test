@@ -270,6 +270,51 @@
   $$("[data-bar]").forEach((el) => barObserver.observe(el));
 
   /* ============================================================
+     COPY ATTRIBUTION
+     Copying a substantial passage quietly appends a credit line and
+     a link back. Nothing is blocked: short copies, code, and anything
+     you can select in a field are left exactly as they are, so the
+     email address and snippets still paste clean.
+     ============================================================ */
+  const CREDIT_MIN_CHARS = 120;
+
+  const inExemptRegion = (node) => {
+    const el = node && (node.nodeType === 1 ? node : node.parentElement);
+    return Boolean(
+      el &&
+        el.closest(
+          "pre, code, input, textarea, [contenteditable], .footer, .nav, .contact__meta"
+        )
+    );
+  };
+
+  document.addEventListener("copy", (e) => {
+    const sel = document.getSelection();
+    if (!sel || sel.isCollapsed) return;
+
+    const text = String(sel);
+    // leave short copies alone: names, emails, a single line of a snippet
+    if (text.trim().length < CREDIT_MIN_CHARS) return;
+    // leave code and form fields alone: those get pasted somewhere it matters
+    if (inExemptRegion(sel.anchorNode) || inExemptRegion(sel.focusNode)) return;
+    if (!e.clipboardData) return;
+
+    const url = document.querySelector('link[rel="canonical"]')?.href || location.href;
+    const credit = `\n\n— Emmanuel Angelo-Hyuwa\n${url}`;
+
+    // keep the rich-text flavour working as well as plain text
+    const wrapper = document.createElement("div");
+    wrapper.appendChild(sel.getRangeAt(0).cloneContents());
+    const html =
+      `${wrapper.innerHTML}<p>— Emmanuel Angelo-Hyuwa<br>` +
+      `<a href="${url}">${url}</a></p>`;
+
+    e.clipboardData.setData("text/plain", text + credit);
+    e.clipboardData.setData("text/html", html);
+    e.preventDefault();
+  });
+
+  /* ============================================================
      CONSOLE EASTER EGG
      ============================================================ */
   console.log(

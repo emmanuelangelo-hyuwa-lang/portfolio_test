@@ -1,0 +1,46 @@
+# License
+
+This repository contains two different kinds of work, under two different
+terms.
+
+## Source code — MIT
+
+The code (HTML structure, CSS, JavaScript, and the serverless functions in
+`api/`) is released under the MIT License.
+
+Copyright (c) 2026 Emmanuel Kunat Angelo-Hyuwa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Written content and images — All rights reserved
+
+The written content is *not* covered by the MIT License above. This includes:
+
+- blog posts, in `blog/posts.json` and anything published to the blog
+- the biography, project write-ups, and other prose across the site
+- `assets/portrait.jpg` and the other images
+- `resume.pdf`
+
+Copyright (c) 2026 Emmanuel Kunat Angelo-Hyuwa. All rights reserved.
+
+You may quote short excerpts with clear attribution and a link back to the
+original. Republishing a post in full, or reusing this writing to train or
+fine-tune a model, requires written permission.
+
+For anything beyond a short quote, ask: kunate0@gmail.com

@@ -1498,6 +1498,12 @@ body.loaded .hero__line-inner {
 }
 
 @media (max-width: 860px) {
+  /* the position: relative above is for the desktop pill; on phones the
+     links are the absolutely positioned dropdown, so put that back */
+  .nav__links {
+    position: absolute;
+  }
+
   /* the mobile menu is a vertical list, the sliding pill does not apply */
   .nav__indicator {
     display: none;
@@ -2054,5 +2060,140 @@ textarea.ctl::placeholder {
   .readon {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+/* ============================================================
+   INITIATIVE (work page): the club I'm building
+   ============================================================ */
+.initiative {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 0;
+  padding: 10px;
+  margin-bottom: 16px;
+}
+
+.initiative__photo {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 100%;
+}
+
+.initiative__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 60%;
+  filter: grayscale(1) contrast(1.06);
+  transition: filter 0.7s var(--ease-out), transform 0.9s var(--ease-out);
+}
+
+/* same move as the portrait: colour comes back under the pointer */
+.initiative:hover .initiative__photo img,
+.initiative:focus-within .initiative__photo img {
+  filter: grayscale(0) contrast(1);
+  transform: scale(1.02);
+}
+
+.initiative__photo figcaption {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  color: var(--ink-dim);
+  background: rgba(8, 8, 8, 0.6);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.initiative__body {
+  padding: 26px 26px 22px 34px;
+  display: flex;
+  flex-direction: column;
+}
+
+.initiative__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink-faint);
+  font-size: 0.72rem;
+  margin-bottom: 16px;
+}
+
+.initiative__body h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.initiative__body h2 em {
+  font-weight: 400;
+  color: var(--ink-dim);
+}
+
+.initiative__lede {
+  color: var(--ink-dim);
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.initiative__goals {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.initiative__goals li {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 6px;
+  color: var(--ink-faint);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.initiative__goals li > span {
+  padding-top: 2px;
+  font-size: 0.7rem;
+}
+
+.initiative__goals b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.initiative__foot {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .initiative {
+    grid-template-columns: 1fr;
+  }
+
+  .initiative__photo {
+    aspect-ratio: 16 / 9;
+  }
+
+  .initiative__body {
+    padding: 24px 16px 16px;
   }
 }
